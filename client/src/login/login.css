@@ -1,0 +1,21 @@
+.formlogin {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+.formdata{
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 50px;
+    background: #dbd2f470;
+    border-radius: 12px;
+    border: 1px solid gray;
+}
+label.form-label {
+    font-size: 20px;
+    font-weight: 500;
+}
+.blocklogin{
+    background: #83c085;;
+}

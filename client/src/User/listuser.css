@@ -1,0 +1,65 @@
+.contextlinklistuser{
+    margin-top: 70px;
+    padding-left: 40px;
+}
+.contextlinklistuser h2{
+    text-align: center;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+   margin-left:5%;
+    overflow:auto;
+    display: block;
+   
+  }
+  i.fa.fa-pencil , i.fa.fa-trash {
+    cursor: pointer;
+    font-size: 20px;
+
+}
+i.fa.fa-trash {
+    font-size: 20px;
+    color: red;
+}
+i.fa.fa-pencil {
+color:green
+}
+  td{
+      width: 10%;
+  }
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .buttoncreateuser{
+      margin-bottom: 20px;
+  }
+
+select {
+    width: 100%;
+    padding: 7px;
+    border-radius: 10px;
+}
+.imguser{
+    width: 100px;
+    height: 100px;
+    border:1px solid gray;
+    cursor: pointer;
+}
+
+input[type="file"]{
+    display: none;
+}
+.imgavatar{
+    width:100px;
+    height:100px;
+}

@@ -1,0 +1,22 @@
+.editUser{
+    margin-top: 70px;
+    padding-left: 40px;
+    width: 50%;
+    margin-left: 25%;
+}
+.buttongroup{
+    display: flex;
+}
+.imguseredit{
+    width: 200px;
+    height: 200px;
+    border:1px solid gray;
+}
+@media only screen and (max-width: 767px) {
+    .editUser{
+        margin-top: 70px;
+        padding-left: 40px;
+        width: 90%!important;
+        margin-left: 0%;
+    }
+}
