@@ -8,7 +8,9 @@ const fastify = require("fastify")({
   });
 
   const Ajv = require("ajv")
- 
+
+
+
  
   const ajv = new Ajv({
     removeAdditional: true,
@@ -24,9 +26,6 @@ fastify.setValidatorCompiler(({ schema, method, url, httpPart }) => {
   return ajv.compile(schema)
 })
 fastify.setSchemaErrorFormatter((errors, dataVar) => {
-
-  const text = errors.map((error) => error.message);
-  
   const payload = [];
   errors.forEach((error) => {
     payload.push({
@@ -34,23 +33,22 @@ fastify.setSchemaErrorFormatter((errors, dataVar) => {
       message: error.message,
     });
   });
- 
-console.log(payload)
   return new Error(JSON.stringify(payload));
 });
-console.log(__dirname)
-  fastify.register(require('fastify-static'), {
-    
+
+fastify.register(require("./src/middlware/Auth"))
+
+fastify.register(require('fastify-jwt'), {
+  secret:"mabimat"
+})
+
+
+    fastify.register(require('fastify-static'), { 
     root: path.join(__dirname, './src/uploads'),
     prefix: '/src/uploads/', // optional: default '/'
   })
-
-
   fastify.register(require('./src/router/User'));
-
-
-
-
+  fastify.register(require('./src/router/Device'));
   const start = async () => {
     try {
       await fastify.listen(5000);

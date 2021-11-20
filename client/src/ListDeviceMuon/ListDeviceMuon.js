@@ -12,10 +12,13 @@ import { Button ,Table ,Modal ,Form } from "react-bootstrap";
 import moment from 'moment';
 function ListDeviceMuon() {
      
-   
+    const token =  Cookies.get('cookielogin')
     const [show1, setShow1] = useState(false);
     const [valuem , setvaluem] =useState(1)
     const [datetra ,setdatetra  ] = useState(false);
+    const [listdevice , setlistdivice] =useState(null)
+    const [calllist ,setcalllist ] =useState(false);
+    const [id,setid] = useState(false);
     const handleClose1 = () => setShow1(false);
     const getTimemuon = (e)=>{
       const TimeChange = moment(e).format('YYYY-MM-DD');
@@ -25,18 +28,62 @@ function ListDeviceMuon() {
       const setdatadevicem =(e)=>{
         setvaluem(e.target.value)
       }
-      const handleShow1 = (id1 ,quantitym) =>{
-      
+      const handleShow1 = (id1) =>{
         setShow1(true)
-       
+        setid(id1)
        }
+      
+       useEffect(async()=>{
+      
+        await axios.get("http://localhost:5000/api/listdevicem" ).then((res)=>{
 
-      const Sendnumberdevicem = async()=>{ }
+       setlistdivice(res.data.msg)    
+      }).catch(err=>{
+        toast.error(err.response.data.msg)
+   
+      })
+      },[calllist])
+    
+
+      const Sendnumberdevicem = async()=>{
+        const datamuon={
+          numberm:valuem ,
+          id:id,
+          timetra: datetra
+        }
+        const config = {
+          'Content-Type': 'application/json',
+        }
+        console.log(datamuon)
+        await axios.post("http://localhost:5000/api/devicemuonchoduyet" , datamuon , {headers: {Authorization: `Bearer ${token}` }} ,config  ).then((res)=>{
+          setcalllist(!calllist)
+          setShow1(false)
+          setvaluem(1)
+          setdatetra(false)
+          toast.success(res.data.message)
+        }).catch(err=>{
+
+          if(err.response.data.message ==="errnumber"){
+            return  toast.error(err.response.data.payload)
+            }
+
+          if(err.response.data.message ==="errtime"){
+            return  toast.error(err.response.data.payload)
+            }else { 
+            JSON.parse(err.response.data.message).map(data=>{
+              toast.error(data.message)
+            })
+          }
+        })
+       }
 
 return ( 
 <div className="ListUser">
 <Slibar/>
-
+<ToastContainer
+position="top-right"
+autoClose={3000}
+closeOnClick/>
    <div className="main-content">
         <header>
             <div className="social-icons">
@@ -48,21 +95,29 @@ return (
         <div className="listdevicemuon">
         <table>
         <h2>Danh sách các thiết bị công ty có mượn được</h2>
-  <tr>
+
+<tr>
     <th>STT</th>
     <th>Name Device</th>
     <th>Image</th>
-    <th>Number Of Remaining Devices</th>
-    <th>Borrow Equipment</th>
+    <th>Number  Devices </th>
+    <th>Price Device (VNĐ)</th>
+    <th>Mượn thiết bị</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>Mạnh Cường</td>
-    <td>muadongyeuthuong3x@gmail.com</td>
-    <td>gmail.com</td>
-    <td> <Button onClick={()=>handleShow1( )}>Borrow</Button>   </td> 
+  {listdevice ===null ? "Loadding...." : listdevice.map((data1 ,index)=>{
+     return( 
+
+     <tr key={data1.id}>
+    <td>{index}</td>
+    <td>{data1.namedevice}</td>
+    <td><img src={"http://localhost:5000/src/uploads/"+data1.imgdevice}  alt="" className="imgavatar"/></td>
+    <td>{(data1.quantitydevice).toLocaleString()}</td>
+    <td>{(data1.tienthietbi).toLocaleString()}</td>
+    <td> <Button onClick={()=>handleShow1(data1.id )}>Mượn</Button> </td>
   
-  </tr>
+  </tr>     ) })
+}
+
 
 </table>
         </div>

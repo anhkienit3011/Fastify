@@ -1,7 +1,6 @@
 const controllers = require("../controller/ControllerUser");
 
 const {RegisterUser} = require ("../Validator/Validatordata/RegisterUser" ) 
- const {UpdateUser} = require("../Validator/Validatordata/UpdateUser")
  const {LoginUser} =require("../Validator/Validatordata/LoginUser")
 const fp = require('fastify-plugin');
 const status  = async (fastify) => {

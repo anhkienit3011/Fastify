@@ -10,7 +10,7 @@ import './listuser.css'
 function ListUser() {
 
 
-   const [idDelete ,setIdDelete]=useState(false)
+     const [idDelete ,setIdDelete]=useState(false)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const [deletetb,setdeletetb]= useState(false);
@@ -123,7 +123,7 @@ function ListUser() {
 <div className="ListUser">
 <ToastContainer
 position="top-right"
-autoClose={1000}
+autoClose={3000}
 closeOnClick/>
 <Slibar/>
 

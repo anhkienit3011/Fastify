@@ -35,6 +35,14 @@ return(
                         <span>Danh Sách Thiết Bị Công Ty</span>
                         </Link>
                 </li>
+                
+
+                <li>
+                <Link to="/listdevicemuon">
+                        <span className="ti-agenda"></span>
+                        <span>Danh sách thiết bị mượn</span>
+                    </Link>
+                </li>
                 <li>
                 <Link to="/listdevicechopheduyet">
                       <span className="ti-clipboard"></span>
@@ -43,12 +51,7 @@ return(
                 </li>
 
 
-                <li>
-                <Link to="/listdevicemuon">
-                        <span className="ti-agenda"></span>
-                        <span>Danh sách thiết bị mượn</span>
-                    </Link>
-                </li>
+              
                 <li>
                     <a href="">
                         <span className="ti-clipboard"></span>

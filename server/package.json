@@ -7,6 +7,7 @@
     "boom": "^7.3.0",
     "fastify": "^3.23.1",
     "fastify-cors": "^6.0.2",
+    "fastify-jwt": "^3.2.1",
     "fastify-plugin": "^3.0.0",
     "fastify-static": "^4.5.0",
     "jsonwebtoken": "^8.5.1",

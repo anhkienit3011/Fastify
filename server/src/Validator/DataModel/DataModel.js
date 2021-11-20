@@ -22,17 +22,52 @@ const registerSchema = {
     },role:{
         type:'string',
         enum:['Admin','User']
-    },
-    isPassword:{
-        type:'interger',
-        enum:[0,1]
-    },
-    isAvatar:{
-        type:'interger',
-        enum:[0,1]
     }
-} 
+}
+
+
+
+const CreateDeviceSchema ={
+  
+    device_name:{
+        type:"string",
+        minLength:5
+       },
+    device_quantity:{
+        type: 'number',
+        minimum: 1
+    },
+    imagedevice:{
+        type:"string",
+        minLength:5
+    },
+    giadevice:{
+        type: 'number',
+        minimum: 1
+    }
+   }
+
+
+
+
+   const timetraDevice = {
+    time:{
+        type:"string",
+        format: "date",
+    },
+    numberm:{
+        type: 'number',
+        minimum: 1 
+    },
+    id:{
+        type: 'integer',
+    }
+}
+
+
 
 module.exports = {
-    registerSchema 
+    registerSchema ,
+    CreateDeviceSchema,
+    timetraDevice
   };
