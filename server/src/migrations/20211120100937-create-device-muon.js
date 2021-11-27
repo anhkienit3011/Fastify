@@ -12,12 +12,18 @@ module.exports = {
         type: Sequelize.DATE
       },
       DeviceId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Devices',
+          key: 'id', 
+      }
       },
       numberm: {
         type: Sequelize.INTEGER
       },
-      USERid: {
+      email: {
+        type: Sequelize.STRING
+      }, trangthai: {
         type: Sequelize.INTEGER
       },
       createdAt: {

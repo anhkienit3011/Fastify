@@ -10,14 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      DeviceMuon.belongsTo(models.Device )
     }
   };
   DeviceMuon.init({
     datetra: DataTypes.DATE,
     DeviceId: DataTypes.INTEGER,
     numberm: DataTypes.INTEGER,
-    USERid: DataTypes.INTEGER
+    email: DataTypes.STRING,
+    trangthai:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'DeviceMuon',

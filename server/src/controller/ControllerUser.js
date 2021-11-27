@@ -100,6 +100,8 @@ const deleteUserDB = async(req ,reply)=>{
         try {
             const {ten ,password , role , avatar} = req.body
 
+     
+
             const {id} = req.params;
             if(ten.length<8){
                 return  reply.code(500).send(BaseService.ERROR("Tên phải từ 8 kí tự trở lên " ,"tenerror"));
@@ -144,6 +146,7 @@ const deleteUserDB = async(req ,reply)=>{
 
             
             }else if (avatar  ===undefined  && password !=undefined  ){
+                const hasspassword = await bcrypt.hash(password,saltRounds)
                 if(password.length<8){
                     return  reply.code(500).send(BaseService.ERROR("Mật khẩu phải từ 8 kí tự trở lên " ,"passworderror"));
                 }
@@ -151,10 +154,12 @@ const deleteUserDB = async(req ,reply)=>{
                     { 
                      name :ten,
                      role:role,
-                     password:password
+                     password: hasspassword
 
                      },
-                    { where: { id} } )  
+                    { where: { id} } ) 
+                    
+                    console.log(password)
             }else{
                 if(password.length<8){
                     return  reply.code(500).send(BaseService.ERROR("Mật khẩu phải từ 8 kí tự trở lên " ,"passworderror"));
@@ -171,12 +176,12 @@ const deleteUserDB = async(req ,reply)=>{
                  }
             })
             const image ="./src/uploads/" +datadelete.avatar
-
+            const hasspassword = await bcrypt.hash(password,saltRounds)
                 await db.User.update(
                     { 
                      name :ten,
                      role:role,
-                     password:password,
+                     password:hasspassword,
                      avatar:time
                      },
                     { where: { id} } ) 
@@ -200,10 +205,13 @@ const deleteUserDB = async(req ,reply)=>{
             if(!datauser){
                 return  reply.code(400).send(BaseService.ERROR("Tài khoản của bạn không đúng " ,"usererr"));
             }
+           
             const passwordb =  datauser.password
             const isMatch = await bcrypt.compare(password ,passwordb )
+           console.log(isMatch)
             if(!isMatch) return reply.code(400).send(BaseService.ERROR("Tài khoản của bạn không đúng"  ,"usererr"))
             const accesstoken = createAccessToken({email})
+        
             const data  = {
                 msg:accesstoken,
                 role:datauser.role

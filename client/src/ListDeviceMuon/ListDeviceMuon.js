@@ -111,7 +111,7 @@ closeOnClick/>
     <td>{index}</td>
     <td>{data1.namedevice}</td>
     <td><img src={"http://localhost:5000/src/uploads/"+data1.imgdevice}  alt="" className="imgavatar"/></td>
-    <td>{(data1.quantitydevice).toLocaleString()}</td>
+    <td>{(data1.soluongconlai).toLocaleString()}</td>
     <td>{(data1.tienthietbi).toLocaleString()}</td>
     <td> <Button onClick={()=>handleShow1(data1.id )}>Mượn</Button> </td>
   
@@ -154,6 +154,9 @@ closeOnClick/>
         </Modal.Footer>
       </Modal>
 
+
+
+   
 
         </div>
     )}

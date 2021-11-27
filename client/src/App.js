@@ -9,6 +9,7 @@ import ListDevice from './ListDeviceCongTy/ListDevice'
 import EditDevice  from './ListDeviceCongTy/EditDevice.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
+import ListDeviceChoDuyet from './ListDeviceChoPheDuyet/ListDeviceChoDuyet'
 function App() {
   return (
     <div className="App">
@@ -22,7 +23,7 @@ function App() {
    
     <Route path="/listdevicemuon"  exact component={ListDeviceMuon} />
 
-    <Route path="/listdevicechopheduyet"  exact component={EditDevice} />
+    <Route path="/listdevicechopheduyet"  exact component={ListDeviceChoDuyet} />
     </Switch>
   </Router> 
     </div>

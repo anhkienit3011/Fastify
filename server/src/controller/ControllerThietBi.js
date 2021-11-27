@@ -115,8 +115,7 @@ const createdevice = async(req,res)=>{
     try{
       const {id , numberm ,timetra } = req.body
       const email =  req.user.email
-      const informationUser =  await db.User.findOne({ where: {email } });
-      const iduser = informationUser.id
+ 
   
      const datemuon = moment(timetra).format("YYYY-MM-DD")
   
@@ -132,18 +131,19 @@ const createdevice = async(req,res)=>{
   }
   
       const data =  await db.Device.findOne({ where: { id:id } });
-      const numbermaxdevice = data.quantitydevice
+      const numbermaxdevice = data.soluongconlai
       if(   numberm >    numbermaxdevice)
         return  res.code(500).send(BaseService.ERROR( "Tổng thiết bị bạn mượn phải nhỏ hơn hoặc bằng thiết bị hiện có của công ty ","errnumber"))
   
       await db.DeviceMuon.create({
-        USERid:iduser,
+        email:email,
         numberm:numberm,
         DeviceId:id,
-        datetra: datemuon
+        datetra: datemuon,
+        trangthai:0
        })
      
-       const quantitydeviceconlai = data.quantitydevice - numberm
+       const quantitydeviceconlai = data.soluongconlai - numberm
        
        await db.Device.update({
   
@@ -158,10 +158,53 @@ const createdevice = async(req,res)=>{
        throw boom.boomify(err);
      }
   }
+
+
+  const listdevicechekduyet  = async(req,res)=>{
+   
+    try {
+      const listdata =   await db.DeviceMuon.findAll(
+    { 
+      where:{
+        trangthai: {
+          [Op.gt]:0
+          
+        } ,
+      },
+       include: [{
+        model:db.Device,
+        attributes:["imgdevice" ,"namedevice"]
+    }],
+    
+    });
+     
+      return  res.code(200).send({
+     
+        msg:listdata,
+      });
+  
+    } catch (error) {
+      throw boom.boomify(error);
+    }
+  }
+
+  const deletedevicechoduyet = async(req,res)=>{
+try {
+  const id = req.params.id
+  console.log(id)
+   await db.DeviceMuon.update( {trangthai:2 } ,{where: { id } });
+   return res.send({msg:"Từ chối thành công "})
+  
+} catch (error) {
+  
+}
+  }
      module.exports = {
         createdevice,
         listdevice,
         deletedevice,
         listdevicemdevice,
-        devicem
+        devicem,
+        listdevicechekduyet,
+        deletedevicechoduyet
       };
