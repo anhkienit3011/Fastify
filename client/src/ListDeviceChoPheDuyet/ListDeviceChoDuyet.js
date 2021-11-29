@@ -15,9 +15,11 @@ function ListDeviceChoDuyet() {
 
   const [listData , setListData] = useState(null)
   const [show, setShow] = useState(false);
+  const [show1, setShow1] = useState(false);
   const [id ,setId] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose1 = () => setShow1(false);
   const [render,setRender]= useState(false);
 
 
@@ -26,7 +28,7 @@ function ListDeviceChoDuyet() {
     await axios.get("http://localhost:5000/api/listdevicechoduyet").then((res)=>{
 
       setListData(res.data.msg)
-      console.log(res.data.msg)
+      
   }).catch(err=>{
 
    
@@ -37,25 +39,39 @@ function ListDeviceChoDuyet() {
 
   const handleShowdy  = (e)=>{
     setId(e)
+    setShow1(true)
   }
+
+ 
 
   const  handleDelete  =(e)=>{
     setId(e)
     setShow(true);
   }
 
-  const handleDeleteDevice = async()=>{
+  const handlehuy = async()=>{
 
-    await axios.delete(`http://localhost:5000/api/deletelistdevicechoduyet/${id}`).then((res)=>{
+    await axios.put(`http://localhost:5000/api/huylistdevicechoduyet/${id}`).then((res)=>{
    toast.success(res.data.msg)
-   setRender(true)
+   setRender(!render)
+   setShow(false)
   }).catch(err=>{
 
    
 
-  })
+  })}
 
-  }
+  const handledy  = async()=>{
+
+    await axios.put(`http://localhost:5000/api/dylistdevicechoduyet/${id}`).then((res)=>{
+   toast.success(res.data.msg)
+   setRender(!render)
+   setShow1(false)
+  }).catch(err=>{
+
+   
+
+  })}
   
   return(
 <div className="ListDeviceChoDuyet">
@@ -126,7 +142,23 @@ closeOnClick/>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleDeleteDevice}>
+          <Button variant="primary" onClick={handlehuy}>
+            Đồng Ý
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+      <Modal show={show1} onHide={handleClose1}>
+        <Modal.Header closeButton>
+          <Modal.Title>Bạn đồng  ý cho mượn</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> Bạn có chắc  đồng ý cho mượn không !</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose1}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handledy}>
             Đồng Ý
           </Button>
         </Modal.Footer>

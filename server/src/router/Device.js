@@ -11,8 +11,8 @@ const status  = async (fastify) => {
  fastify.post( "/api/devicemuonchoduyet", {schema: DeviceMuon , preValidation: [fastify.authenticate]  },controllers.devicem  )
  fastify.get( "/api/listdevicechoduyet"  ,controllers.listdevicechekduyet  )
 
- fastify.delete("/api/deletelistdevicechoduyet/:id"  ,controllers.deletedevicechoduyet  )
-
+ fastify.put("/api/huylistdevicechoduyet/:id"  ,controllers.huydevicechoduyet  )
+ fastify.put("/api/dylistdevicechoduyet/:id"  ,controllers.dydevicechoduyet  )
  
 }
 

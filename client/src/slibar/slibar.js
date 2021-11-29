@@ -53,10 +53,11 @@ return(
 
               
                 <li>
-                    <a href="">
+                <Link to= "/tinhtrangthietbicuaban">
+                   
                         <span className="ti-clipboard"></span>
-                        <span>Leaves</span>
-                    </a>
+                        <span>Trạng Thái Thiết Bị Của Bạn</span>
+                        </Link>
                 </li>
                 <li>
                     <a href="">

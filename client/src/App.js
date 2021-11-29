@@ -10,6 +10,7 @@ import EditDevice  from './ListDeviceCongTy/EditDevice.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
 import ListDeviceChoDuyet from './ListDeviceChoPheDuyet/ListDeviceChoDuyet'
+import Tinhtrangthietbimuon from './ListDeviceMeMuon/Tinhtrangthietbimuon'
 function App() {
   return (
     <div className="App">
@@ -24,6 +25,9 @@ function App() {
     <Route path="/listdevicemuon"  exact component={ListDeviceMuon} />
 
     <Route path="/listdevicechopheduyet"  exact component={ListDeviceChoDuyet} />
+
+    <Route path="/tinhtrangthietbicuaban"  exact component={Tinhtrangthietbimuon} />
+
     </Switch>
   </Router> 
     </div>

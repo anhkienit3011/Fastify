@@ -167,7 +167,7 @@ const createdevice = async(req,res)=>{
     { 
       where:{
         trangthai: {
-          [Op.gt]:0
+          [Op.eq]:0
           
         } ,
       },
@@ -188,10 +188,9 @@ const createdevice = async(req,res)=>{
     }
   }
 
-  const deletedevicechoduyet = async(req,res)=>{
+  const huydevicechoduyet = async(req,res)=>{
 try {
   const id = req.params.id
-  console.log(id)
    await db.DeviceMuon.update( {trangthai:2 } ,{where: { id } });
    return res.send({msg:"Từ chối thành công "})
   
@@ -199,6 +198,17 @@ try {
   
 }
   }
+
+  const dydevicechoduyet= async(req,res)=>{
+    try {
+      const id = req.params.id
+       await db.DeviceMuon.update( {trangthai:1 } ,{where: { id } });
+       return res.send({msg:"Duyệt thành công "})
+      
+    } catch (error) {
+      
+    }
+      }
      module.exports = {
         createdevice,
         listdevice,
@@ -206,5 +216,6 @@ try {
         listdevicemdevice,
         devicem,
         listdevicechekduyet,
-        deletedevicechoduyet
+        huydevicechoduyet,
+        dydevicechoduyet
       };
