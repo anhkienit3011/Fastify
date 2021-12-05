@@ -1,6 +1,9 @@
 .listdevicemuon{
     margin-top: 70px;
-    padding-left: 40px;
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
+
+}
+.formSearchMuon{
+    display: flex;
+    margin-bottom: 20px;
 }

@@ -7,12 +7,13 @@ import {Link} from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
-import { Button ,Table ,Modal ,Form } from "react-bootstrap";
+import { Button ,Table ,Modal ,Form ,Col } from "react-bootstrap";
 import moment from 'moment';
 import './listdevicechoduyet.css'
+import Header from "../Header/Header"
 function ListDeviceChoDuyet() {
       
-
+  const token =  Cookies.get('cookielogin')
   const [listData , setListData] = useState(null)
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
@@ -21,8 +22,9 @@ function ListDeviceChoDuyet() {
   const handleShow = () => setShow(true);
   const handleClose1 = () => setShow1(false);
   const [render,setRender]= useState(false);
-
-
+  const [listNhom,setListNhom]= useState(null);
+  const [nhom ,setNhom] = useState(0)
+  const [nameseach , setnamesearch]= useState('');
   useEffect(async()=>{
       
     await axios.get("http://localhost:5000/api/listdevicechoduyet").then((res)=>{
@@ -31,9 +33,16 @@ function ListDeviceChoDuyet() {
       
   }).catch(err=>{
 
-   
-
   })
+
+  await axios.get("http://localhost:5000/api/getnhomdivice", {headers: {Authorization: `Bearer ${token}` }} , {
+    headers: { Authorization: `Bearer ${token}` },
+  }).then((res) => {
+    setListNhom(res.data);
+  }).catch((err) => {
+
+  });
+
   },[render])
 
 
@@ -72,6 +81,19 @@ function ListDeviceChoDuyet() {
    
 
   })}
+
+  const handleSearchDeviceChoduyet = async()=>{
+    const data = {
+      nameseach:nameseach,
+      nhom:nhom
+    }
+    await axios.post("http://localhost:5000/api/searchdevicechoduyet",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
+    setListData(res.data.listDevice)
+    }).catch(err=>{
+      
+    
+    })
+  }
   
   return(
 <div className="ListDeviceChoDuyet">
@@ -83,16 +105,29 @@ closeOnClick/>
 
 
 <div className="main-content">
-        <header>
-            <div className="social-icons">
-                <span className="ti-bell"></span>
-                <div></div>
-            </div>
-        </header>
-        
-        <div className="listdevicemuon">
+<Header/>
+<div className="inputsearchdevicechoduyet">
+        <Col xs={5} >
+                      <Form.Control placeholder="Tìm kiếm thiết bị" onChange = {(e)=>setnamesearch(e.target.value)} />
+                     
+                    </Col>
+                    <select name="" id="" className="selectnhom" onChange = {(e)=>setNhom(e.target.value)}>
+                        <option value="0">Tất cả nhóm</option>
+                         {listNhom === null ?"data ..": listNhom.map((nhom ,index)=>{return(
+     <option value={nhom.id} key={index}>{nhom.Name}</option>
+   )})} 
+                      </select> 
+                    
+                    <button type="button" className="btn btn-success buttonsearch" onClick={()=>handleSearchDeviceChoduyet()}>
+                    <svg width="15px" height="15px">
+                            <path d="M11.618 9.897l4.224 4.212c.092.09.1.23.02.312l-1.464 1.46c-.08.08-.222.072-.314-.02L9.868 11.66M6.486 10.9c-2.42 0-4.38-1.955-4.38-4.367 0-2.413 1.96-4.37 4.38-4.37s4.38 1.957 4.38 4.37c0 2.412-1.96 4.368-4.38 4.368m0-10.834C2.904.066 0 2.96 0 6.533 0 10.105 2.904 13 6.486 13s6.487-2.895 6.487-6.467c0-3.572-2.905-6.467-6.487-6.467 "></path>
+                        </svg>
+                    </button>
+        </div>
+
+        <div className="listdevicemuonchoduyet">
         <table>
-        <h2>Danh sách các thiết bị công ty có mượn được</h2>
+   
 
 <tr>
     <th>STT</th>

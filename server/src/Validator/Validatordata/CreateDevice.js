@@ -5,7 +5,7 @@ const {resSchema} = require('../Schema/resSchema')
   const createDevice = {
     body: {
       type: 'object',
-      required: ['device_name','device_quantity','imagedevice','giadevice'],
+      required: ['device_name','device_quantity','imagedevice','giadevice' ,'idnhoma'],
       properties: {
         device_name: {
             ...CreateDeviceSchema.device_name,
@@ -31,6 +31,9 @@ const {resSchema} = require('../Schema/resSchema')
               _: MESSAGECREATEDEVICE.TIENDEVICE,
             },
           },
+          idnhoma:{
+            
+          }
       },
       additionalProperties: false,
     },

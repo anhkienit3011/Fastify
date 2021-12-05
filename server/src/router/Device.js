@@ -13,6 +13,33 @@ const status  = async (fastify) => {
 
  fastify.put("/api/huylistdevicechoduyet/:id"  ,controllers.huydevicechoduyet  )
  fastify.put("/api/dylistdevicechoduyet/:id"  ,controllers.dydevicechoduyet  )
+
+
+ 
+ fastify.post("/api/searchdevice" ,{ preValidation: [fastify.authenticate] },controllers.searchDevice)
+ 
+ fastify.get("/api/showdeviceyou" ,{ preValidation: [fastify.authenticate] },controllers.showtinhtrangthietbicuaban)
+ fastify.post("/api/searchnhom" ,{ preValidation: [fastify.authenticate] },controllers.searchNhom)
+ fastify.post("/api/createnhomthietbi" ,{ preValidation: [fastify.authenticate] },controllers.createnhomthietbi)
+ 
+ 
+ fastify.get("/api/getnhomdivice" ,{ preValidation: [fastify.authenticate] },controllers.getnhomthietbi)
+ fastify.delete("/api/deletenhomthietbi/:id" ,{ preValidation: [fastify.authenticate] },controllers.deletenhomthietbi)
+
+
+ fastify.get("/api/editnhomthietbi/:id" ,{ preValidation: [fastify.authenticate] },controllers.getEditNhomThietBi)
+
+ fastify.put("/api/updatenhomthietbi/:id" ,{ preValidation: [fastify.authenticate] },controllers.updateNhomThietBi)
+
+ 
+
+ fastify.post("/api/searchdevicemuon" ,{ preValidation: [fastify.authenticate] },controllers.searchDevicemuon)
+
+ fastify.post("/api/searchdevicechoduyet" ,{ preValidation: [fastify.authenticate] },controllers.searchDevicechoduyet)
+
+ fastify.get("/api/listdevicedangmuon" ,{ preValidation: [fastify.authenticate] },controllers.listdevicedangmuon)
+
+ 
  
 }
 

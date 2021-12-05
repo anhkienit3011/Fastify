@@ -1,13 +1,12 @@
 import React ,{useState ,useEffect ,useRef} from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
-import { useParams } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
 import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
-import { Button ,Table ,Modal ,Form } from "react-bootstrap";
+import { Button  ,Modal ,Form ,Col} from "react-bootstrap";
 import './listdevice.css'
+import Header from "../Header/Header"
 function ListDevice() {
   const [id,setid] = useState(false);
     const [show, setShow] = useState(false);
@@ -15,20 +14,25 @@ function ListDevice() {
     const [showcreatedevice ,setshowcreatedevice]  = useState(false);
     const targetupload = useRef(null)
     const [listdevice , setlistdivice] =useState(null)
+    const [listNhom , setListNhom]  = useState(null)
+    const [nhom ,setNhom] = useState(0)
     const [baseImage , setBaseImage] =useState({
         img:null
       })
+      const [nameseach , setnamesearch]= useState('');
+      const token = Cookies.get("cookielogin");
     const [value_device , setvalue_device] = useState({
         device_name :'',
         device_quantity:'',
-        giadevice:''
+        giadevice:'',
+        idnhom:''
     })  
     const getdatadevice = (e)=>{
         var target = e.target;
         var name = target.name;
         var value = target.value;
         setvalue_device({ ...value_device ,[name] : value })
-        
+      
     }
   
       const handleUpload  = (e)=>{
@@ -47,8 +51,9 @@ function ListDevice() {
 
 
       const handleClose = () => setShow(false);
-      const handleCreateDevice = ()=>{
+      const handleCreateDevice =()=>{
         setshowcreatedevice(true)
+        
       }
      
       const handleCloseCreate = ()=>{
@@ -57,13 +62,20 @@ function ListDevice() {
       useEffect(async()=>{
       
         await axios.get("http://localhost:5000/api/listdevice").then((res)=>{
-
        setlistdivice(res.data.msg)    
       }).catch(err=>{
-
-       
-   
       })
+
+      await axios.get("http://localhost:5000/api/getnhomdivice", {headers: {Authorization: `Bearer ${token}` }} , {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setListNhom(res.data);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.msg);
+        });
+
       },[deletetb,showcreatedevice])
 
       const deletedevice = async()=>{
@@ -83,29 +95,34 @@ function ListDevice() {
         const config = {
           'Content-Type': "application/json",
           }
-       const dataDevice ={
+       const dataDevicecode ={
+        idnhoma:Number(value_device.idnhom),
          device_name:value_device.device_name,
          device_quantity:Number(value_device.device_quantity),
          imagedevice:baseImage.img,
-         giadevice:Number(value_device.giadevice)
+         giadevice:Number(value_device.giadevice),
+         
        }
-      
-        await axios.post("http://localhost:5000/api/createdevice" ,dataDevice ,config).then((res)=>{
+        await axios.post("http://localhost:5000/api/createdevice" ,dataDevicecode ,config).then((res)=>{
      
          setvalue_device({
           device_name :'',
           device_quantity:'',
-          giadevice:''
+          giadevice:'',
+          idnhom:''
       })  
       setBaseImage({
-        img:''
+        img:false
       })
   
         toast.success(res.data.msg)
         setshowcreatedevice(false)
           
       }).catch(err=>{
-        console.log( JSON.parse(err.response.data.message))
+       if(err.response.data.message === 'msgnhom'){
+         return toast.error(err.response.data.payload)
+       }
+    
         JSON.parse(err.response.data.message).map(data=>{
           toast.error(data.message)
         })
@@ -113,33 +130,59 @@ function ListDevice() {
 
       }
 
+      const handleSearchDevice = async()=>{
+      const data = {
+        nameseach:nameseach,
+        nhom:nhom
+      }
+      await axios.post("http://localhost:5000/api/searchdevice",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
+      setlistdivice(res.data.listDevice)
+      }).catch(err=>{
+        
+      
+      })
+      }
+
     return ( 
-<div className="ListUser">
+<div className="listdevicemuon">
 <Slibar/>
 <ToastContainer
 position="top-right"
 autoClose={3000}
 closeOnClick/>
    <div className="main-content">
-        <header>
-            <div className="social-icons">
-                <span className="ti-bell"></span>
-                <div></div>
-            </div>
-        </header>
+   <Header/>
         
         <div className="listdevicemuon">
         <table>
-        <Button className="buttoncreatedevice" onClick={()=>handleCreateDevice()} > Add Device  <span><i class="fa fa-plus" aria-hidden="true"></i></span></Button>
+          <div className = "formSearch">
+        <Button className="buttoncreatedevice" onClick={()=>handleCreateDevice()} >Thêm thiết bị <span><i class="fa fa-plus" aria-hidden="true"></i></span></Button>
+        <Col xs={5} className="inputsearch ">
+                      <Form.Control placeholder="Tìm kiếm thiết bị" onChange = {(e)=>setnamesearch(e.target.value)} />
+                     
+                    </Col>
+                    <select name="" id="" className="selectnhom" onChange = {(e)=>setNhom(e.target.value)}>
+                        <option value="0">Tất cả nhóm</option>
+                        {listNhom === null ?"data ..": listNhom.map((nhom ,index)=>{return(
+     <option value={nhom.id} key={index}>{nhom.Name}</option>
+   )})}
+                      </select>
+                    
+                    <button type="button" className="btn btn-success buttonsearch" onClick={()=>handleSearchDevice()}>
+                    <svg width="15px" height="15px">
+                            <path d="M11.618 9.897l4.224 4.212c.092.09.1.23.02.312l-1.464 1.46c-.08.08-.222.072-.314-.02L9.868 11.66M6.486 10.9c-2.42 0-4.38-1.955-4.38-4.367 0-2.413 1.96-4.37 4.38-4.37s4.38 1.957 4.38 4.37c0 2.412-1.96 4.368-4.38 4.368m0-10.834C2.904.066 0 2.96 0 6.533 0 10.105 2.904 13 6.486 13s6.487-2.895 6.487-6.467c0-3.572-2.905-6.467-6.487-6.467 "></path>
+                        </svg>
+                    </button>
+        </div>
   <tr>
     <th>STT</th>
-    <th>Name Device</th>
-    <th>Image</th>
-    <th>Number  Devices</th>
-    <th>Number  Devices Còn Lại</th>
-    <th>Price Device (VNĐ)</th>
-    <th>Edit Device</th>
-    <th>Delete Device</th>
+    <th>Tên thiết bị</th>
+    <th>Ảnh</th>
+    <th>Tổng số thiết bị</th>
+    <th>Số thiết bị còn lại</th>
+    <th>Giá thiết bị (VNĐ)</th>
+    <th>Sửa</th>
+    <th>Xóa</th>
   </tr>
   {listdevice ===null ? "Loadding...." : listdevice.map((data1 ,index)=>{
      return( 
@@ -212,6 +255,13 @@ closeOnClick/>
     <br />
     
   </Form.Group>
+
+  <select name="idnhom" onChange={getdatadevice}>
+  <option value="0" disabled selected hidden>Chọn Nhóm Thiết Bị</option>
+   {listNhom === null ?"data ..": listNhom.map((nhom ,index)=>{return(
+     <option value={nhom.id} key={index}>{nhom.Name}</option>
+   )})}
+</select>
 
 
         </Modal.Body>

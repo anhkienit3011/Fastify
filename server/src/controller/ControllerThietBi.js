@@ -10,10 +10,100 @@ const BaseService = require('./service')
 const sequelize = require('sequelize');
 
 
+const createnhomthietbi  = async(req,res)=>{
+  try {
+    const {  nhomdevice,thoigianmuontoidata } = req.body
+
+    const data = await db.Nhomthietbi.findOne({ where:{Name : nhomdevice }})
+  
+    const numberthang = Number(thoigianmuontoidata)
+    if(nhomdevice.length <5){
+      return res.status(400).send({msg:"Tên nhóm thiết bị phải lớn hơn 5 kí tự"})
+    }
+    if(numberthang <1 ||numberthang >12){
+      return res.status(400).send({msg:"Thời gian mượn nhóm thiết bị  nhỏ nhất là 1 thàng và nhiều nhất là 12 tháng"})
+    }
+
+    if(data){
+      return res.status(400).send({msg:"Tên nhóm thiết bị đã tồn tại trong hệ thống"})
+    }
+
+    await db.Nhomthietbi.create({
+      Name: nhomdevice,
+      timetoida: thoigianmuontoidata
+    })
+   return res.send({msg:"Tạo nhóm thiết bị thành công"})
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+}
+
+const getnhomthietbi = async(req,res)=>{
+  try {
+    const data =await  db.Nhomthietbi.findAll({})
+    return res.send(data)
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+}
+
+const deletenhomthietbi =  async(req,res)=>{
+  try {
+    const {id} = req.params
+    await  db.Nhomthietbi.destroy({where :{id :id }})
+    return res.send({msg:"Xóa Thành Công Nhóm Thiết Bị"});
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+}
+
+const getEditNhomThietBi = async(req,res)=>{
+  try {
+    const {id} = req.params
+    const data = await  db.Nhomthietbi.findOne({where :{id :id }})
+    return res.send(data);
+
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+}
+
+
+const updateNhomThietBi = async(req,res)=>{
+
+  try {
+    const {id} =req.params
+    const {Name , timetoida} = req.body
+    const time = Number(timetoida)
+    await  db.Nhomthietbi.update(
+    { Name:Name,
+      timetoida:time},
+      {where :{id :id }})
+    return res.send({msg:"Sua thanh cong nhom thiet bi"});
+
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+
+}
+
+const searchNhom = async(req,res)=>{
+  const data  = await db.Nhomthietbi.findAll({
+    where:{
+      Name:{ 
+        [Op.like]:`%${req.body.nameseach}%`
+      }
+    }
+})
+return res.send({listNhom:data})
+}
 const createdevice = async(req,res)=>{
    
-    const {   device_name , device_quantity , giadevice ,imagedevice } =req.body
-  
+    const { device_name , device_quantity , giadevice ,imagedevice ,idnhoma} =req.body
+    if(idnhoma ===0){
+      return  res.code(500).send(BaseService.ERROR("Vui lòng chọn nhóm thiết bị","msgnhom"));
+    }
+   
     let base64Image = imagedevice.split(';base64,').pop();
     const time =  Date.now() +".png"
     fs.writeFileSync(`./src/uploads/${time}`, base64Image, {encoding: 'base64'}, function(err) {
@@ -25,7 +115,8 @@ const createdevice = async(req,res)=>{
         quantitydevice:device_quantity,
         imgdevice :time ,
         soluongconlai:device_quantity,
-        tienthietbi :giadevice
+        tienthietbi :giadevice,
+        NhomthietbiId :idnhoma
     })
    
     return  res.code(201).send({
@@ -40,11 +131,10 @@ const createdevice = async(req,res)=>{
 
 
   const listdevice = async(req,res)=>{
-  
     try {
      
-      const listdata =   await db.Device.findAll({ });
-  
+      const listdata =   await db.Device.findAll();
+
       return  res.code(200).send({
         msg:listdata,
       });
@@ -95,7 +185,7 @@ const createdevice = async(req,res)=>{
       const listdata =   await db.Device.findAll({
   
         where:{
-          quantitydevice:{ [Op.gt]: 0,  } 
+          soluongconlai:{ [Op.gt]: 0,  } 
         }
   
        });
@@ -108,6 +198,78 @@ const createdevice = async(req,res)=>{
       throw boom.boomify(err);
     }
   }
+  
+  const searchDevicemuon = async(req,res)=>{
+    const {nameseach , nhom}  = req.body
+    const numbernhom = Number(nhom)
+    let data = null
+    if(numbernhom === 0){ 
+     data  = await db.Device.findAll({
+      where:{
+        namedevice:{ 
+          [Op.like]:`%${nameseach}%`
+        },
+        soluongconlai:{
+          [Op.gt]: 0
+        }
+      }
+    })
+  } else{
+    data  = await db.Device.findAll({
+      where:{
+        namedevice:{ 
+          [Op.like]:`%${nameseach}%`
+        },
+        soluongconlai:{
+          [Op.gt]: 0
+        },
+       NhomthietbiId:{ 
+          [Op.eq]:numbernhom
+        }
+      }
+    })
+  }
+    return res.send({listDevice:data})
+  }
+
+  const searchDevicechoduyet = async(req,res)=>{
+    const {nameseach , nhom}  = req.body
+    const numbernhom = Number(nhom)
+    let data = null
+    if(numbernhom === 0){ 
+     data  = await db.DeviceMuon.findAll({
+
+      include: [{
+        model: db.Device,
+        where:{
+          namedevice:{ 
+            [Op.like]:`%${nameseach}%`
+          },
+         
+        },
+       
+      }]
+
+    })
+  } else{
+    data  = await db.DeviceMuon.findAll({
+      include: [{
+        model: db.Device,
+        where:{
+          namedevice:{ 
+            [Op.like]:`%${nameseach}%`
+          },
+          NhomthietbiId:{ 
+            [Op.eq]:numbernhom
+          }
+        }
+          
+      }]
+    })
+  }
+    return res.send({listDevice:data})
+  }
+
 
 
   const devicem = async(req , res)=>{
@@ -116,8 +278,25 @@ const createdevice = async(req,res)=>{
       const {id , numberm ,timetra } = req.body
       const email =  req.user.email
  
-  
+     
      const datemuon = moment(timetra).format("YYYY-MM-DD")
+     const timeMax = await db.Device.findOne({  where:{id} ,
+   include: [{
+      model:db.Nhomthietbi,
+      attributes:["timetoida"]
+  }],
+})  
+
+     const momentmax = moment().add(timeMax.Nhomthietbi.timetoida, 'months');
+     const formatdate = momentmax.format("YYYY-MM-DD")
+   
+     const times =(new Date(formatdate)).getTime()
+      const timestra  =   (new Date(timetra)).getTime()
+     if(times < timestra){
+      return  res.code(500).send(BaseService.ERROR( ` Thiết bị này bạn có thể mượn tối đa ${timeMax.Nhomthietbi.timetoida}  tháng ` ,"errtimemuon"));
+  
+     }
+
   
    if( datemuon.slice(0,4) < (new Date().getFullYear())  )
    return  res.code(500).send(BaseService.ERROR( "Thời gian trả phải lớn hơn thời gian hiện tại " ,"errtime"));
@@ -188,9 +367,46 @@ const createdevice = async(req,res)=>{
     }
   }
 
+  const searchDevice = async(req,res)=>{
+    const {nameseach , nhom}  = req.body
+    const numbernhom = Number(nhom)
+    let data = null
+    if(numbernhom === 0){ 
+     data  = await db.Device.findAll({
+      where:{
+        namedevice:{ 
+          [Op.like]:`%${nameseach}%`
+        }
+      }
+    })
+  } else{
+    data  = await db.Device.findAll({
+      where:{
+        namedevice:{ 
+          [Op.like]:`%${nameseach}%`
+        },
+       NhomthietbiId:{ 
+          [Op.eq]:numbernhom
+        }
+      }
+    })
+  }
+    return res.send({listDevice:data})
+
+  }
+
   const huydevicechoduyet = async(req,res)=>{
 try {
   const id = req.params.id
+  const datamuon = await  db.DeviceMuon.findOne({where:{id}})
+  const datam =datamuon.numberm
+  const idhuy = datamuon.DeviceId 
+  const datadevice= await db.Device.findOne({where:{id:idhuy}})
+
+  await db.Device.update({
+    soluongconlai: (datadevice.soluongconlai + datam)},{where: { id:idhuy} 
+  })
+  
    await db.DeviceMuon.update( {trangthai:2 } ,{where: { id } });
    return res.send({msg:"Từ chối thành công "})
   
@@ -209,6 +425,49 @@ try {
       
     }
       }
+
+
+      const showtinhtrangthietbicuaban= async(req,res)=>{
+        try {
+          const email =  req.user.email
+          const data =    await db.DeviceMuon.findAll( {where: { email} ,
+            include: [{
+              model:db.Device,
+              attributes:["imgdevice" ,"namedevice"]
+          }],
+           });
+          
+          return res.send( data )
+        } catch (error) {
+          
+        }
+          }
+
+      const listdevicedangmuon  = async(req,res)=>{
+
+        try {
+
+          const data =  await db.DeviceMuon.findAll({
+           where:{
+            trangthai:{
+              [Op.eq]: 2
+            }
+           },
+            include: [{
+            model:db.Device,
+            attributes:["imgdevice" ,"namedevice","tienthietbi"]
+        }],
+           });
+          
+          return res.send( data )
+          
+        } catch (error) {
+          
+        }
+        
+      }
+
+
      module.exports = {
         createdevice,
         listdevice,
@@ -217,5 +476,16 @@ try {
         devicem,
         listdevicechekduyet,
         huydevicechoduyet,
-        dydevicechoduyet
+        dydevicechoduyet,
+        showtinhtrangthietbicuaban,
+        createnhomthietbi,
+        getnhomthietbi,
+        deletenhomthietbi,
+        getEditNhomThietBi,
+        updateNhomThietBi,
+        searchNhom,
+        searchDevice,
+        searchDevicemuon,
+        searchDevicechoduyet,
+        listdevicedangmuon
       };

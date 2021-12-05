@@ -27,6 +27,9 @@ const  senddata =async(event)=>{
   
     await axios.post("http://localhost:5000/api/login" ,  login ,{config}).then((res)=>{
       const data =  JSON.parse(res.data.message)
+      localStorage.setItem("role",data.role)
+      localStorage.setItem("name",data.name)
+      localStorage.setItem("avatar",data.avatar)
       Cookies.set('cookielogin', data.msg)
       window.location.href  = "/listdevicemuon"
     }).catch(err=>{

@@ -1,8 +1,6 @@
 .listdevicemuon{
     margin-top: 70px;
-    padding-left: 40px;
-    width: 90%;
-    margin-left: 5%;
+    width: 100%;
 }
 
 .buttoncreatedevice{
@@ -13,4 +11,16 @@
     width:60%;
     margin-left: 20%;
     margin-top: 70px;
+}
+
+select.selectnhom {
+    height: 37px;
+    margin-top: 3px;
+    width: 25%;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    background-clip: padding-box;
+}
+option{
+    border-radius: 3px;
 }

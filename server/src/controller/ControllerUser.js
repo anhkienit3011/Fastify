@@ -6,7 +6,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const BaseService = require('./service')
 const fs = require('fs')
-
+const Op = require('Sequelize').Op;
 const register = async(req ,reply)=>{
    
     try {
@@ -214,7 +214,9 @@ const deleteUserDB = async(req ,reply)=>{
         
             const data  = {
                 msg:accesstoken,
-                role:datauser.role
+                role:datauser.role,
+                name:datauser.name,
+                avatar:datauser.avatar
             }
             return  reply.code(200).send(BaseService.SUCCESS( null ,JSON.stringify( data)));
     
@@ -226,6 +228,18 @@ const deleteUserDB = async(req ,reply)=>{
        
     }
 
+     const searchUser  = async(req,res)=>{
+        
+        const data  = await db.User.findAll({
+            where:{
+                name:{ 
+                [Op.like]:`%${req.body.nameseach}%`
+              }
+            }
+        })
+        return res.send({listUser:data})
+ 
+     }
     
     const createAccessToken = (email) =>{
         return jwt.sign(email, "mabimat", {expiresIn: '7d'})
@@ -237,5 +251,6 @@ module.exports = {
     deleteUserDB,
     editUserDB,
     updateUserDB,
-    login
+    login,
+    searchUser
   };

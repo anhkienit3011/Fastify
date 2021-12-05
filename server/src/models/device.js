@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Device.hasMany(models.DeviceMuon )
+      Device.hasMany(models.DeviceMuon)
+      Device.belongsTo(models.Nhomthietbi, { foreignKey: 'NhomthietbiId' });
     }
   };
   Device.init({
@@ -18,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     imgdevice: DataTypes.STRING,
     quantitydevice: DataTypes.INTEGER,
     soluongconlai: DataTypes.INTEGER,
-    tienthietbi: DataTypes.INTEGER
+    tienthietbi: DataTypes.INTEGER,
+    NhomthietbiId:DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Device',

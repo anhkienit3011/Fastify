@@ -7,6 +7,13 @@ import { Button ,Form  ,Row ,Col} from "react-bootstrap";
 import './slibar.css'
 function Slibar() {
     
+    const logout = ()=>{
+        localStorage.removeItem("name")
+        localStorage.removeItem("avatar")
+        localStorage.removeItem("role")
+        Cookies.remove("cookielogin")
+        
+    }
 
 return( 
 <div className="dasboard">
@@ -29,10 +36,18 @@ return(
                         <span>Danh sách User</span>
                     </Link>
                 </li>
+
+                <li>
+                <Link to="/nhomthietbi">
+                        <span className="ti-face-smile"></span>
+                        <span>Nhóm thiết bị công ty</span>
+                        </Link>
+                </li>
+
                 <li>
                 <Link to="/listdevice">
                         <span className="ti-face-smile"></span>
-                        <span>Danh Sách Thiết Bị Công Ty</span>
+                        <span>Danh sách thiết bị công ty</span>
                         </Link>
                 </li>
                 
@@ -40,13 +55,20 @@ return(
                 <li>
                 <Link to="/listdevicemuon">
                         <span className="ti-agenda"></span>
-                        <span>Danh sách thiết bị mượn</span>
+                        <span>Danh sách thiết  mượn</span>
                     </Link>
                 </li>
                 <li>
                 <Link to="/listdevicechopheduyet">
                       <span className="ti-clipboard"></span>
-                        <span>Danh Sách Thiết Bị Chờ Duyệt</span>
+                        <span>Danh Sách Thiết  Chờ Duyệt</span>
+                        </Link>
+                </li>
+
+                 <li>
+                <Link to="/listdevicecdangmuon">
+                      <span className="ti-clipboard"></span>
+                        <span>Danh Sách Thiết  Đang Mượn</span>
                         </Link>
                 </li>
 
@@ -59,11 +81,13 @@ return(
                         <span>Trạng Thái Thiết Bị Của Bạn</span>
                         </Link>
                 </li>
-                <li>
-                    <a href="">
+              
+                <li  onClick ={logout}>
+                <Link to= "/login">
                         <span className="ti-folder"></span>
-                        <span>Projects</span>
-                    </a>
+                        <span>LogOut</span>
+                    
+            </Link>
                 </li>
                 <li>
                     <a href="">

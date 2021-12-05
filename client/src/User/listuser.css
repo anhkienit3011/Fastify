@@ -1,6 +1,5 @@
 .contextlinklistuser{
     margin-top: 70px;
-    padding-left: 40px;
 }
 .contextlinklistuser h2{
     text-align: center;
@@ -47,7 +46,9 @@ color:green
 select {
     width: 100%;
     padding: 7px;
-    border-radius: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    background-clip: padding-box;
 }
 .imguser{
     width: 100px;
@@ -62,4 +63,17 @@ input[type="file"]{
 .imgavatar{
     width:100px;
     height:100px;
+}
+.formSearch{
+    display: flex;
+}
+.inputsearch{
+    margin-left: 30px;
+    margin-right: 15px;
+    margin-top: 3px;
+}
+.buttonsearch{
+    margin-left: 30px;
+    height: 40px;
+    margin-top: 3px;
 }

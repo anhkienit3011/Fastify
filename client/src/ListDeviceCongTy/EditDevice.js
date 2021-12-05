@@ -9,6 +9,7 @@ import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
 import { Button ,Table ,Modal ,Form } from "react-bootstrap";
 import './listdevice.css'
+import Header from "../Header/Header"
 function EditDevice() {
 
    

@@ -3,19 +3,20 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import {Link} from 'react-router-dom'
-import { Button ,Modal ,Form} from "react-bootstrap";
+import { Button ,Modal ,Form ,Col} from "react-bootstrap";
 import Slibar from '../slibar/slibar'
 import './listuser.css'
-
+import Header from './../Header/Header'
 function ListUser() {
 
-
+  const token = Cookies.get("cookielogin");
      const [idDelete ,setIdDelete]=useState(false)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const [deletetb,setdeletetb]= useState(false);
     const [listUser , setListUser] = useState(null);
     const [showcreateuser ,setshowcreateuser]= useState(false);
+    const [nameseach , setnamesearch]= useState(false);
     const [register , setregister] = useState({
         ten:'',
         email:'',
@@ -105,7 +106,21 @@ function ListUser() {
         
       }
 
-
+     
+      const handleSearchUser = async()=>{
+        const data = {
+          nameseach:nameseach
+        }
+        await axios.post("http://localhost:5000/api/searchuser",  data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setListUser(res.data.listUser)
+        })
+        .catch((err) => {
+          toast.error(err.response.data.msg);
+        });
+      }
 
       const deleteUser = async()=>{
        
@@ -128,19 +143,23 @@ closeOnClick/>
 <Slibar/>
 
    <div className="main-content">
- 
-        <header>
-            <div className="social-icons">
-                <span className="ti-bell"></span>
-                <div></div>
-            </div>
-        </header>
+      <Header/>
         
         <div className="contextlinklistuser">
-<h2>Danh sách user của công ty</h2>
 
         <table>
+          <div className="formSearch">
         <Button className="buttoncreateuser" onClick={()=>handleCreateUser()} > Add User  <span><i className="fa fa-plus" aria-hidden="true"></i></span></Button>
+        <Col xs={5} className="inputsearch">
+                      <Form.Control placeholder="Tìm kiếm thành viên theo tên" onChange = {(e)=>setnamesearch(e.target.value)} />
+                    </Col>
+                    
+                    <button type="button" className="btn btn-success buttonsearch" onClick={()=>handleSearchUser()}>
+                    <svg width="15px" height="15px">
+                            <path d="M11.618 9.897l4.224 4.212c.092.09.1.23.02.312l-1.464 1.46c-.08.08-.222.072-.314-.02L9.868 11.66M6.486 10.9c-2.42 0-4.38-1.955-4.38-4.367 0-2.413 1.96-4.37 4.38-4.37s4.38 1.957 4.38 4.37c0 2.412-1.96 4.368-4.38 4.368m0-10.834C2.904.066 0 2.96 0 6.533 0 10.105 2.904 13 6.486 13s6.487-2.895 6.487-6.467c0-3.572-2.905-6.467-6.487-6.467 "></path>
+                        </svg>
+                    </button>
+                    </div>
   <tr>
     <th>STT</th>
     <th>Tên User</th>

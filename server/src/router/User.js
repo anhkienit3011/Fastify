@@ -13,6 +13,8 @@ fastify.get( "/api/edituser/:id",controllers.editUserDB )
 fastify.post( "/api/login", {schema:LoginUser} , controllers.login )
 fastify.put( "/api/updateuser/:id" , controllers.updateUserDB )
 
+fastify.post("/api/searchuser" ,{ preValidation: [fastify.authenticate] },controllers.searchUser)
+
 
 }
 module.exports = fp(status);
