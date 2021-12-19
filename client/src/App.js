@@ -14,6 +14,7 @@ import Tinhtrangthietbimuon from './ListDeviceMeMuon/Tinhtrangthietbimuon'
 import  TraThietBi from './ListDeviceTra/TraThietBi'
 import nhomthietbi from './nhomthietbi/nhomthietbi.js';
 import DanhsachThietBiDangMuon from "./Danhsachthietbidangmuon/DanhSachThietBiDangMuon"
+import Chat from "./UserChat/Chat"
 function App() {
   return (
     <div className="App">
@@ -32,7 +33,7 @@ function App() {
     <Route path="/tinhtrangthietbicuaban"  exact component={Tinhtrangthietbimuon} />
     <Route path="/trathietbi"  exact component={TraThietBi} />
 
-   
+    <Route path ="/chat" exact component ={Chat} />
     <Route path="/listdevicecdangmuon"  exact component={DanhsachThietBiDangMuon} />
 
     </Switch>
