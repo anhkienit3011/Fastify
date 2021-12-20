@@ -1,5 +1,5 @@
 import React, {useState}  from 'react'
-import './Chat.css'
+import './Chat.scss'
 import Slibar from '../slibar/slibar'
 import InputEmoji from "react-input-emoji";
 
@@ -14,9 +14,10 @@ export default function Chat(){
   return (  
 <>
   <Slibar/>
-  <div className="container">
+  <div className="container leftchat">
     <div className="row">
       <section className="discussions">
+        
         <scrollbars>
         <div className="discussion search">
           <div className="searchbar">
@@ -24,6 +25,7 @@ export default function Chat(){
             <input type="text" placeholder="Search..."></input>
           </div>
         </div>
+
         <div className="discussion message-active">
           <div className="photo" >
             <div className="online"></div>
@@ -34,6 +36,7 @@ export default function Chat(){
           </div>
           <div className="timer">12 sec</div>
         </div>
+
         <div className="discussion">
           <div className="photo" >
             <div className="online"></div>
@@ -45,6 +48,7 @@ export default function Chat(){
           <div className="timer">3 min</div>
         </div>
         </scrollbars>
+
       </section>
       <section className="chat">
         <scrollbars>

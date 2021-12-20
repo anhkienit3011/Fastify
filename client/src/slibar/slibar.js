@@ -81,6 +81,14 @@ return(
                         <span>Trạng Thái Thiết Bị Của Bạn</span>
                         </Link>
                 </li>
+
+              <li>
+                <Link to= "/chat">
+                   
+                   <span className="ti-clipboard"></span>
+                   <span>Chat</span>
+                   </Link>
+           </li>
               
                 <li  onClick ={logout}>
                 <Link to= "/login">

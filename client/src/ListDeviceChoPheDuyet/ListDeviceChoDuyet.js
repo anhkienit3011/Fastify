@@ -9,7 +9,7 @@ import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
 import { Button ,Table ,Modal ,Form ,Col } from "react-bootstrap";
 import moment from 'moment';
-import './listdevicechoduyet.css'
+import './listdevicechoduyet.scss'
 import Header from "../Header/Header"
 function ListDeviceChoDuyet() {
       

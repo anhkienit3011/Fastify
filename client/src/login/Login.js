@@ -2,7 +2,7 @@ import React ,{ useState  } from 'react'
 import { toast } from 'react-toastify';
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import './login.css'
+import './login.scss'
 function Login() {
     
   const [login , setlogin] = useState({
@@ -67,7 +67,7 @@ return (
       <span></span>
       <span></span>
       <span></span>
-      <button class="btn btn-lg btn-block " type="submit" variant="primary" >Login <i class="fa fa-sign-in clickable"></i></button>
+      <button class="btn btn-lg btn-block " type="submit" variant="primary" onClick= {senddata} >Login <i class="fa fa-sign-in clickable"></i></button>
       <span></span>
       <span></span>
       <span></span>

@@ -8,7 +8,7 @@ import DatePicker from 'react-datepicker'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
 import { Button ,Table ,Modal ,Form } from "react-bootstrap";
-import './listdevice.css'
+import './listdevice.scss'
 import Header from "../Header/Header"
 function EditDevice() {
 

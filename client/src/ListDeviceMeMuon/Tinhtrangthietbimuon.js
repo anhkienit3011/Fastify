@@ -3,7 +3,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import Slibar from "../slibar/slibar.js";
-import "./ttdevice.css";
+import "./ttdevice.scss";
 import Header from "../Header/Header"
 function Tinhtrangthietbimuon() {
   const token = Cookies.get("cookielogin");

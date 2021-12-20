@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
-import './listdevicemuon.css'
+import './listdevicemuon.scss'
 import Header from '../Header/Header'
 import { Button ,Col ,Modal ,Form } from "react-bootstrap";
 import moment from 'moment';

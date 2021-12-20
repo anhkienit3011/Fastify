@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
 import { Button  ,Modal ,Form ,Col} from "react-bootstrap";
-import './listdevice.css'
+import './listdevice.scss'
 import Header from "../Header/Header"
 function ListDevice() {
   const [id,setid] = useState(false);

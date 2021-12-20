@@ -1,4 +1,4 @@
-import './headercss.css'
+import './headercss.scss'
 import Cookies from 'js-cookie'
 const HeaderWeb  = ()=>{
     const name = localStorage.getItem("name")
