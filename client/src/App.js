@@ -1,7 +1,7 @@
-import React  from 'react'
+import React  ,{useEffect , useRef ,useState } from 'react'
 import { BrowserRouter as Router , Route , Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './login/Login.js'
+import Login from './login/Loginweb.js'
 import ListUser from './User/ListUser'
 import EditUser from './User/EditUser.js';
 import ListDeviceMuon from './ListDeviceMuon/ListDeviceMuon'
@@ -14,13 +14,18 @@ import Tinhtrangthietbimuon from './ListDeviceMeMuon/Tinhtrangthietbimuon'
 import  TraThietBi from './ListDeviceTra/TraThietBi'
 import nhomthietbi from './nhomthietbi/nhomthietbi.js';
 import DanhsachThietBiDangMuon from "./Danhsachthietbidangmuon/DanhSachThietBiDangMuon"
-import Chat from "./UserChat/Chat"
+import ChatList from "./UserChat/chatList/ChatList"
+import Chatcongty from "./GroupChat/ChatCongTy"
+import  Loginweb from "./login/Loginweb.js"
+
 function App() {
+
+
   return (
     <div className="App">
   <Router>
     <Switch>  
-    <Route path="/login"  exact component={Login} />
+    <Route path="/login"  exact component={Loginweb} />
     <Route path="/listuser"  exact component={ListUser} />
     <Route path="/edituser/:id"  exact component={EditUser} />
     <Route path="/listdevice"  exact component={ListDevice} />
@@ -33,9 +38,12 @@ function App() {
     <Route path="/tinhtrangthietbicuaban"  exact component={Tinhtrangthietbimuon} />
     <Route path="/trathietbi"  exact component={TraThietBi} />
 
-    <Route path ="/chat" exact component ={Chat} />
+    <Route path ="/chat" exact component ={ChatList} />
     <Route path="/listdevicecdangmuon"  exact component={DanhsachThietBiDangMuon} />
 
+    <Route path="/nhomchatcongty"  exact component={Chatcongty} />
+
+ 
     </Switch>
   </Router> 
     </div>

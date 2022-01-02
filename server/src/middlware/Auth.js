@@ -8,7 +8,7 @@ module.exports = fp(async function(fastify, opts) {
      await request.jwtVerify();
      
      const {email} = request.user
-     console.log(email)
+   
      const datauser = await db.User.findOne({ where: { email } });
    
      if(!datauser){

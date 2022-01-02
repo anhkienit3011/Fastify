@@ -49,6 +49,7 @@ fastify.register(require('fastify-jwt'), {
   })
   fastify.register(require('./src/router/User'));
   fastify.register(require('./src/router/Device'));
+  fastify.register(require('./src/router/Message'));
   const start = async () => {
     try {
       await fastify.listen(5000);

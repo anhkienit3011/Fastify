@@ -9,7 +9,7 @@ const HeaderWeb  = ()=>{
  <header>
             <h3 className="congty">Công ty công nghệ số Việt Nam</h3>
             <div className="ttuser">
-            <img className="avatar" src={`http://localhost:5000/src/uploads/`+avatar}  alt="imgerr"/>
+            <img className="avatarheader" src={`http://localhost:5000/src/uploads/`+avatar}  alt="imgerr"/>
              <p className="nameuser">{name}   </p>
             
             </div>

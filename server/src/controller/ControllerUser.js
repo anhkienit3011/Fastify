@@ -43,7 +43,6 @@ const getListUserDB = async(req,res)=>{
    const listUser = await db.User.findAll({
     attributes:["id","name" ,"email","role","avatar"]
    })
-  
     return  res.send(BaseService.SUCCESS(listUser,null));
 
 } catch (err) {
@@ -62,7 +61,6 @@ const deleteUserDB = async(req ,reply)=>{
     })
 
     const image ="./src/uploads/" +datadelete.avatar
-    console.log(image)
    fs.unlinkSync((image), err => {
      if (err) throw err;
     });
@@ -159,7 +157,7 @@ const deleteUserDB = async(req ,reply)=>{
                      },
                     { where: { id} } ) 
                     
-                    console.log(password)
+
             }else{
                 if(password.length<8){
                     return  reply.code(500).send(BaseService.ERROR("Mật khẩu phải từ 8 kí tự trở lên " ,"passworderror"));
@@ -208,7 +206,6 @@ const deleteUserDB = async(req ,reply)=>{
            
             const passwordb =  datauser.password
             const isMatch = await bcrypt.compare(password ,passwordb )
-           console.log(isMatch)
             if(!isMatch) return reply.code(400).send(BaseService.ERROR("Tài khoản của bạn không đúng"  ,"usererr"))
             const accesstoken = createAccessToken({email})
         
@@ -240,6 +237,17 @@ const deleteUserDB = async(req ,reply)=>{
         return res.send({listUser:data})
  
      }
+
+     const getUserLogin  = async (req ,res)=>{
+        const {email} = req.user
+         const data = await db.User.findOne({
+             where:{
+                 email
+             }
+         })
+      
+         return res.code(200).send(data)
+     }
     
     const createAccessToken = (email) =>{
         return jwt.sign(email, "mabimat", {expiresIn: '7d'})
@@ -252,5 +260,6 @@ module.exports = {
     editUserDB,
     updateUserDB,
     login,
-    searchUser
+    searchUser,
+    getUserLogin
   };

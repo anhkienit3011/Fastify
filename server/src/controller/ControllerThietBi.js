@@ -52,6 +52,17 @@ const getnhomthietbi = async (req, res) => {
 const deletenhomthietbi = async (req, res) => {
   try {
     const { id } = req.params;
+     const data =   await db.Nhomthietbi.findOne({where:{
+      id
+    }})
+   const deviceconhom =   await db.Device.findOne({
+      where:{
+        NhomthietbiId:data.id
+      }
+    })
+    if(deviceconhom){
+      return res.code(400).send({msg:"Hieen"})
+    }
     await db.Nhomthietbi.destroy({ where: { id: id } });
     return res.send({ msg: "Xóa Thành Công Nhóm Thiết Bị" });
   } catch (error) {
