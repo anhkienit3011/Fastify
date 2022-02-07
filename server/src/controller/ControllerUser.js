@@ -50,6 +50,17 @@ const getListUserDB = async(req,res)=>{
 }
 }
 
+const getListUserDBcongty = async(req,res)=>{
+    try{
+   const listUser = await db.User.findAll({
+    attributes:["id","name" ,"email","role","avatar"]
+   })
+    return  res.send(BaseService.SUCCESS(listUser,null));
+
+} catch (err) {
+    throw boom.boomify(err);  
+}
+}
 
 const deleteUserDB = async(req ,reply)=>{
     try {
@@ -261,5 +272,6 @@ module.exports = {
     updateUserDB,
     login,
     searchUser,
-    getUserLogin
+    getUserLogin,
+    getListUserDBcongty
   };

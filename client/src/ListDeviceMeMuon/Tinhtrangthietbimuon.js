@@ -18,6 +18,10 @@ function Tinhtrangthietbimuon() {
       })
       .catch((err) => {
         toast.error(err.response.data.msg);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+       
       });
   }, []);
 

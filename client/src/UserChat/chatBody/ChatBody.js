@@ -52,7 +52,9 @@ export default function Messenger() {
         const res = await axios.get("/conversations/" + user._id);
         setConversations(res.data);
       } catch (err) {
-        console.log(err);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
       }
     };
     getConversations();
@@ -64,7 +66,9 @@ export default function Messenger() {
         const res = await axios.get("/messages/" + currentChat?._id);
         setMessages(res.data);
       } catch (err) {
-        console.log(err);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
       }
     };
     getMessages();
@@ -93,7 +97,10 @@ export default function Messenger() {
       setMessages([...messages, res.data]);
       setNewMessage("");
     } catch (err) {
-      console.log(err);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      
     }
   };
 

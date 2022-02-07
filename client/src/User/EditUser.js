@@ -17,7 +17,7 @@ function EditUser() {
     avatar:''
 }); 
 let history = useHistory();
-
+const token = Cookies.get("cookielogin");
 const Laydata = (e) =>{
   var target = e.target;
   var name = target.name;
@@ -43,8 +43,7 @@ const {id} =  useParams();
 
     useEffect(async()=>{
     
-      await axios.get( `http://localhost:5000/api/edituser/${id}`  ).then((res)=>{
-        console.log(editUser)
+      await axios.get( `http://localhost:5000/api/edituser/${id}`  ,{headers: {Authorization: `Bearer ${token}`} } ).then((res)=>{
           setEditUser({
               ten :res.data.payload.name,
               role:res.data.payload.role,
@@ -52,7 +51,13 @@ const {id} =  useParams();
               avatar:res.data.payload.avatar
           })  
     }).catch(err=>{
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
       
+       return  history.push("/login") ;
+        }
     })
     },[id])
   
@@ -95,7 +100,7 @@ const {id} =  useParams();
         'Content-Type': 'application/json',
       }
    
-      await axios.put(`http://localhost:5000/api/updateuser/${id}`  ,edituserdata,{config}).then((res)=>{
+      await axios.put(`http://localhost:5000/api/updateuser/${id}`  ,edituserdata,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
     
         toast.success(res.data.payload)
         setEditUser({
@@ -109,7 +114,13 @@ const {id} =  useParams();
         history.push("/listuser");  }, 1000);
           
       }).catch(err=>{
-
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
 
  if(err.response.data.message ==="tenerror"){
   return  toast.error(err.response.data.payload)
@@ -192,9 +203,7 @@ closeOnClick/>
 
     <Button variant="primary" onClick={SendEditUser}>Edit User</Button>
 
-    <Link to="/listuser" > <Button variant="secondary">
-  Come Back
-  </Button> </Link>
+    <Link to="/listuser" > <Button variant="secondary">Come Back</Button> </Link>
 
 </Form>
 

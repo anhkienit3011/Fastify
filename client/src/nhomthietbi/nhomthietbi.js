@@ -47,6 +47,13 @@ function nhomthietbi() {
       })
       .catch((err) => {
         toast.error(err.response.data.msg);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
       });
   }, [calllist]);
 
@@ -65,6 +72,13 @@ function nhomthietbi() {
       })
       .catch((err) => {
         toast.error(err.response.data.msg);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
       });
     
   }
@@ -79,6 +93,13 @@ function nhomthietbi() {
       })
       .catch((err) => {
         toast.error(err.response.data.msg);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
       });
 
   }
@@ -102,7 +123,15 @@ function nhomthietbi() {
     })
     .catch((err) => {
       toast.error(err.response.data.msg);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
+      
+       return  history.push("/login") ;
+        }
     });
+    
 
   }
   const handleCloseEditnhom = ()=>{
@@ -125,9 +154,17 @@ function nhomthietbi() {
     }).then((res) => { 
       setCallist(!calllist)
       toast.success(res.data.msg)
+      seteditNhom(false)
     })
     .catch((err) => {
       toast.error(err.response.data.msg);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
+      
+       return  history.push("/login") ;
+        }
     });
   }
 
@@ -143,6 +180,13 @@ function nhomthietbi() {
     })
     .catch((err) => {
       toast.error(err.response.data.msg);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
+      
+       return  history.push("/login") ;
+        }
     });
   }
 

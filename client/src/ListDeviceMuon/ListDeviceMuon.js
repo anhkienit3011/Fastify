@@ -21,7 +21,8 @@ function ListDeviceMuon() {
     const [listdevice , setlistdivice] =useState(null)
     const [calllist ,setcalllist ] =useState(false);
     const [id,setid] = useState(false);
-    const [nhom ,setNhom] = useState(0)
+    const [nhom ,setNhom] = useState(0);
+    const history = useHistory();
     const handleClose1 = () => setShow1(false);
     const getTimemuon = (e)=>{
       const TimeChange = moment(e).format('YYYY-MM-DD');
@@ -38,14 +39,18 @@ function ListDeviceMuon() {
       
        useEffect(async()=>{
       
-        await axios.get("http://localhost:5000/api/listdevicem" ).then((res)=>{
+        await axios.get("http://localhost:5000/api/listdevicem" , {headers: {Authorization: `Bearer ${token}`} } ).then((res)=>{
 
        setlistdivice(res.data.msg)    
       }).catch(err=>{
         toast.error(err.response.data.msg)
+        // if(err.response.data.message ==="erroruser"){
+        //   return  history.push("/login") ;
+        //  }
+        console.log(err.response.data)
    
       })
-      await axios.get("http://localhost:5000/api/getnhomdivice", {headers: {Authorization: `Bearer ${token}` }} , {
+      await axios.get("http://localhost:5000/api/getnhomdivicem", {headers: {Authorization: `Bearer ${token}` }} , {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -53,6 +58,9 @@ function ListDeviceMuon() {
       })
       .catch((err) => {
         toast.error(err.response.data.msg);
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
       });
       },[calllist])
     
@@ -73,6 +81,13 @@ function ListDeviceMuon() {
           setdatetra(false)
           toast.success(res.data.message)
         }).catch(err=>{
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
+          if( err.response.data.message === "errorrole" ){
+          
+           return  history.push("/login") ;
+            }
           if(err.response.data.message ==="errnumber"){
             return  toast.error(err.response.data.payload)
             }
@@ -99,7 +114,13 @@ function ListDeviceMuon() {
         await axios.post("http://localhost:5000/api/searchdevicemuon",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
         setlistdivice(res.data.listDevice)
         }).catch(err=>{
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
+          if( err.response.data.message === "errorrole" ){
           
+           return  history.push("/login") ;
+            }
         
         })
        }

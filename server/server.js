@@ -37,7 +37,7 @@ fastify.setSchemaErrorFormatter((errors, dataVar) => {
 });
 
 fastify.register(require("./src/middlware/Auth"))
-
+fastify.register(require("./src/middlware/CheckRole"))
 fastify.register(require('fastify-jwt'), {
   secret:"mabimat"
 })

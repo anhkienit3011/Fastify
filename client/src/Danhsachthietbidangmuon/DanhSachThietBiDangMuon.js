@@ -51,6 +51,13 @@ function DanhsachThietBiDangMuon() {
         await axios.get("http://localhost:5000/api/listdevicedangmuon" , {headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
        setlistdivice(res.data)    
       }).catch(err=>{
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
        
    
       })
@@ -61,6 +68,13 @@ function DanhsachThietBiDangMuon() {
         setListNhom(res.data);
       })
       .catch((err) => {
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+        if( err.response.data.message === "errorrole" ){
+        
+         return  history.push("/login") ;
+          }
         toast.error(err.response.data.msg);
       });
       },[calllist])
@@ -89,7 +103,13 @@ function DanhsachThietBiDangMuon() {
 
           toast.success(res.data.message)
         }).catch(err=>{
-         
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
+          if( err.response.data.message === "errorrole" ){
+          
+           return  history.push("/login") ;
+            }
         toast.error(err.response.data.msg)
           
 
@@ -106,7 +126,13 @@ function DanhsachThietBiDangMuon() {
         await axios.post("http://localhost:5000/api/searchdevicemuon",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
         setlistdivice(res.data.listDevice)
         }).catch(err=>{
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
+          if( err.response.data.message === "errorrole" ){
           
+           return  history.push("/login") ;
+            }
         
         })
        }

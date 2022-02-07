@@ -24,7 +24,7 @@ const createnhomthietbi = async (req, res) => {
       });
     }
 
-    if (data) {
+    if (data && data.Name === nhomdevice) {
       return res
         .status(400)
         .send({ msg: "Tên nhóm thiết bị đã tồn tại trong hệ thống" });
@@ -49,6 +49,15 @@ const getnhomthietbi = async (req, res) => {
   }
 };
 
+const getnhomthietbim = async (req, res) => {
+  try {
+    const data = await db.Nhomthietbi.findAll({});
+    return res.send(data);
+  } catch (error) {
+    throw boom.boomify(error);
+  }
+};
+
 const deletenhomthietbi = async (req, res) => {
   try {
     const { id } = req.params;
@@ -61,7 +70,7 @@ const deletenhomthietbi = async (req, res) => {
       }
     })
     if(deviceconhom){
-      return res.code(400).send({msg:"Hieen"})
+      return res.code(400).send({msg:"Thiết bị trong nhóm vẫn còn không thể xóa "})
     }
     await db.Nhomthietbi.destroy({ where: { id: id } });
     return res.send({ msg: "Xóa Thành Công Nhóm Thiết Bị" });
@@ -85,6 +94,23 @@ const updateNhomThietBi = async (req, res) => {
     const { id } = req.params;
     const { Name, timetoida } = req.body;
     const time = Number(timetoida);
+    const data = await db.Nhomthietbi.findOne({ where: { Name} });
+    if (Name.length < 5) {
+      return res
+        .status(400)
+        .send({ msg: "Tên nhóm thiết bị phải lớn hơn 5 kí tự" });
+    }
+    if (time < 1 || time > 12) {
+      return res.status(400).send({
+        msg: "Thời gian mượn nhóm thiết bị  nhỏ nhất là 1 thàng và nhiều nhất là 12 tháng",
+      });
+    }
+
+    if (data.Nhomthietbi === Name && data.id === id) {
+      return res
+        .status(400)
+        .send({ msg: "Tên nhóm thiết bị đã tồn tại trong hệ thống" });
+    }
     await db.Nhomthietbi.update(
       { Name: Name, timetoida: time },
       { where: { id: id } }
@@ -142,6 +168,44 @@ const createdevice = async (req, res) => {
   }
 };
 
+const editedevice = async (req, res) => {
+ 
+  const { device_name, device_quantity, giadevice, imagedevice, idnhoma ,id } =
+    req.body;
+  if (idnhoma === 0) {
+    return res
+      .code(500)
+      .send(BaseService.ERROR("Vui lòng chọn nhóm thiết bị", "msgnhom"));
+  }
+
+  let base64Image = imagedevice.split(";base64,").pop();
+  const time = Date.now() + ".png";
+  fs.writeFileSync(
+    `./src/uploads/${time}`,
+    base64Image,
+    { encoding: "base64" },
+    function (err) {
+      console.log("File created");
+    }
+  );
+  try {
+    await db.Device.update({
+      namedevice: device_name,
+      quantitydevice: device_quantity,
+      imgdevice: time,
+      soluongconlai: device_quantity,
+      tienthietbi: giadevice,
+      NhomthietbiId: idnhoma,
+    },{where:{id}});
+
+    return res.code(201).send({
+      msg: "Sửa thiết bị thành công",
+    });
+  } catch (err) {
+    throw boom.boomify(err);
+  }
+};
+
 const listdevice = async (req, res) => {
   try {
     const listdata = await db.Device.findAll();
@@ -157,15 +221,6 @@ const listdevice = async (req, res) => {
 const deletedevice = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await db.Device.findOne({ where: { id } });
-    //  if(devicechoduyet.length  >0  || deviceduyet.length >0) {
-
-    // return  res.code(400).send({
-    //    msg:"Vẫn còn người mượn thiết bị nên không thể xóa được",
-
-    //  });
-    // }
-
     await db.Device.destroy({
       where: {
         id: id,
@@ -183,6 +238,24 @@ const deletedevice = async (req, res) => {
     throw boom.boomify(err);
   }
 };
+
+  const getEditDevice  =async (req, res) => { 
+    try {
+      const id  = req.params.id
+      const data = await db.Device.findOne({ where: { id } ,
+        include: [
+          {
+            model: db.Nhomthietbi,
+            attributes: ["Name"],
+          }]
+       });
+      return res.code(200).send({data })
+      
+    } catch (error) {
+      throw boom.boomify(err);
+      
+    }
+  }
 
 const listdevicemdevice = async (req, res) => {
   try {
@@ -447,8 +520,10 @@ const huydevicechoduyet = async (req, res) => {
 
 const dydevicechoduyet = async (req, res) => {
   try {
+    console.log("dyvvvvvvvvvvvvvvvvvvv")
     const id = req.params.id;
     await db.DeviceMuon.update({ trangthai: 1 }, { where: { id } });
+    
     return res.send({ msg: "Duyệt thành công " });
   } catch (error) {}
 };
@@ -590,6 +665,7 @@ module.exports = {
   deletedevice,
   listdevicemdevice,
   devicem,
+  getEditDevice,
   listdevicechekduyet,
   huydevicechoduyet,
   dydevicechoduyet,
@@ -605,5 +681,7 @@ module.exports = {
   searchDevicechoduyet,
   listdevicedangmuon,
   trathietbi,
-  searchthietbidangmuon
+  searchthietbidangmuon,
+  getnhomthietbim,
+  editedevice
 };

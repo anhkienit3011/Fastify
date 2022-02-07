@@ -1,12 +1,10 @@
-import React  ,{useEffect , useRef ,useState } from 'react'
-import { BrowserRouter as Router , Route , Switch } from 'react-router-dom'
+import React , {useEffect} from 'react'
+import { BrowserRouter as Router , Route , Switch  ,Redirect} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './login/Loginweb.js'
 import ListUser from './User/ListUser'
 import EditUser from './User/EditUser.js';
 import ListDeviceMuon from './ListDeviceMuon/ListDeviceMuon'
 import ListDevice from './ListDeviceCongTy/ListDevice'
-import EditDevice  from './ListDeviceCongTy/EditDevice.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-toastify/dist/ReactToastify.css';
 import ListDeviceChoDuyet from './ListDeviceChoPheDuyet/ListDeviceChoDuyet'
@@ -17,20 +15,19 @@ import DanhsachThietBiDangMuon from "./Danhsachthietbidangmuon/DanhSachThietBiDa
 import ChatList from "./UserChat/chatList/ChatList"
 import Chatcongty from "./GroupChat/ChatCongTy"
 import  Loginweb from "./login/Loginweb.js"
-
+import Cookies from "js-cookie";
 function App() {
-
+  const token = Cookies.get("cookielogin")
 
   return (
     <div className="App">
   <Router>
     <Switch>  
     <Route path="/login"  exact component={Loginweb} />
-    <Route path="/listuser"  exact component={ListUser} />
+    {token ?<>
+    <Route path="/listuser"  exact component={ ListUser } />
     <Route path="/edituser/:id"  exact component={EditUser} />
     <Route path="/listdevice"  exact component={ListDevice} />
-    <Route path="/editdevice"  exact component={EditDevice} />
-   
     <Route path="/listdevicemuon"  exact component={ListDeviceMuon} />
 
     <Route path="/listdevicechopheduyet"  exact component={ListDeviceChoDuyet} />
@@ -41,7 +38,7 @@ function App() {
     <Route path ="/chat" exact component ={ChatList} />
     <Route path="/listdevicecdangmuon"  exact component={DanhsachThietBiDangMuon} />
 
-    <Route path="/nhomchatcongty"  exact component={Chatcongty} />
+    <Route path="/nhomchatcongty"  exact component={Chatcongty} /> </> : <Redirect to="/login" />}
 
  
     </Switch>

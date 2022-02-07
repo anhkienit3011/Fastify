@@ -25,6 +25,10 @@ module.exports = {
       },
       NhomthietbiId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Nhomthietbis',
+          key: 'id', 
+      }
       },
       createdAt: {
         allowNull: false,

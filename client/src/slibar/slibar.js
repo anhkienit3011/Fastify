@@ -1,4 +1,4 @@
-import React ,{ useState  } from 'react'
+import React ,{ useState ,useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -6,6 +6,11 @@ import {Link} from 'react-router-dom'
 import { Button ,Form  ,Row ,Col} from "react-bootstrap";
 import './slibar.css'
 function Slibar() {
+    const [rolecheck,setrolecheck] =  useState("User");
+    useEffect(() => {
+      const roleuser  =  localStorage.getItem("role")
+      setrolecheck(roleuser)
+    }, []);
     
     const logout = ()=>{
         localStorage.removeItem("name")
@@ -30,26 +35,26 @@ return(
         
         <div className="sidebar-menu">
             <ul>
-                <li>
+             {(rolecheck ==="Admin")&&<li>
                 <Link to="/listuser">
                         <span className="ti-home"></span>
                         <span>Danh sách User</span>
                     </Link>
-                </li>
+                </li> }
 
-                <li>
+                {(rolecheck ==="Admin")&&  <li>
                 <Link to="/nhomthietbi">
                         <span className="ti-face-smile"></span>
                         <span>Nhóm thiết bị công ty</span>
                         </Link>
-                </li>
+                </li> }
 
-                <li>
+                {(rolecheck ==="Admin")&&  <li>
                 <Link to="/listdevice">
                         <span className="ti-face-smile"></span>
                         <span>Danh sách thiết bị công ty</span>
                         </Link>
-                </li>
+                </li> }
                 
 
                 <li>
@@ -58,19 +63,19 @@ return(
                         <span>Danh sách thiết  mượn</span>
                     </Link>
                 </li>
-                <li>
+                {(rolecheck ==="Admin")&&  <li>
                 <Link to="/listdevicechopheduyet">
                       <span className="ti-clipboard"></span>
                         <span>Danh Sách Thiết  Chờ Duyệt</span>
                         </Link>
-                </li>
+                </li> }
 
-                 <li>
+                {(rolecheck ==="Admin")&&    <li>
                 <Link to="/listdevicecdangmuon">
                       <span className="ti-clipboard"></span>
                         <span>Danh Sách Thiết  Đang Mượn</span>
                         </Link>
-                </li>
+                </li> }
 
 
               
@@ -99,24 +104,7 @@ return(
                     
             </Link>
                 </li>
-                <li>
-                    <a href="">
-                        <span className="ti-time"></span>
-                        <span>Timesheet</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span className="ti-book"></span>
-                        <span>Contacts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span className="ti-settings"></span>
-                        <span>Account</span>
-                    </a>
-                </li>
+              
             </ul>
         </div>
     </div>

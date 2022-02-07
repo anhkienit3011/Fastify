@@ -45,11 +45,17 @@ export default function ChatContent () {
     }) 
 
     try {
-      const res = await axios.post("/messages", dataChat);
+      const res = await axios.post("/messages", dataChat ,{headers: {Authorization: `Bearer ${token}`} });
       setMessages([...messages, res.data]);
       setTextChat("");
     } catch (err) {
-      console.log(err);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
+      
+       return  history.push("/login") ;
+        }
     }
 
 

@@ -14,6 +14,7 @@ import Header from "../Header/Header"
 function ListDeviceChoDuyet() {
       
   const token =  Cookies.get('cookielogin')
+  const history = useHistory()
   const [listData , setListData] = useState(null)
   const [show, setShow] = useState(false);
   const [show1, setShow1] = useState(false);
@@ -27,20 +28,33 @@ function ListDeviceChoDuyet() {
   const [nameseach , setnamesearch]= useState('');
   useEffect(async()=>{
       
-    await axios.get("http://localhost:5000/api/listdevicechoduyet").then((res)=>{
+    await axios.get("http://localhost:5000/api/listdevicechoduyet" ,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
 
       setListData(res.data.msg)
       
   }).catch(err=>{
+    if(err.response.data.message ==="erroruser"){
+        history.push("/login") ;
+     }
+    if( err.response.data.message === "errorrole" ){
+    
+       history.push("/login") ;
+      }
 
   })
 
-  await axios.get("http://localhost:5000/api/getnhomdivice", {headers: {Authorization: `Bearer ${token}` }} , {
-    headers: { Authorization: `Bearer ${token}` },
+  await axios.get("http://localhost:5000/api/getnhomdivice",  {
+    headers: { Authorization: `Bearer ${token}` }
   }).then((res) => {
     setListNhom(res.data);
   }).catch((err) => {
-
+    if(err.response.data.message ==="erroruser"){
+       history.push("/login") ;
+     }
+    if( err.response.data.message === "errorrole" ){
+    
+       history.push("/login") ;
+      }
   });
 
   },[render])
@@ -60,24 +74,39 @@ function ListDeviceChoDuyet() {
 
   const handlehuy = async()=>{
 
-    await axios.put(`http://localhost:5000/api/huylistdevicechoduyet/${id}`).then((res)=>{
+    await axios.get(`http://localhost:5000/api/huylistdevicechoduyet/${id}` ,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
    toast.success(res.data.msg)
    setRender(!render)
    setShow(false)
   }).catch(err=>{
 
-   
+    if(err.response.data.message ==="erroruser"){
+        history.push("/login") ;
+     }
+    if( err.response.data.message === "errorrole" ){
+    
+       history.push("/login") ;
+      }
 
   })}
 
   const handledy  = async()=>{
-
-    await axios.put(`http://localhost:5000/api/dylistdevicechoduyet/${id}`).then((res)=>{
+    await axios.get(`http://localhost:5000/api/dylistdevicechoduyet/${id} `, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
    toast.success(res.data.msg)
    setRender(!render)
    setShow1(false)
+   
   }).catch(err=>{
-
+    if(err.response.data.message ==="erroruser"){
+        history.push("/login") ;
+     }
+    if( err.response.data.message === "errorrole" ){
+    
+       history.push("/login") ;
+      }
    
 
   })}
@@ -90,7 +119,13 @@ function ListDeviceChoDuyet() {
     await axios.post("http://localhost:5000/api/searchdevicechoduyet",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
     setListData(res.data.listDevice)
     }).catch(err=>{
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+      if( err.response.data.message === "errorrole" ){
       
+       return  history.push("/login") ;
+        }
     
     })
   }

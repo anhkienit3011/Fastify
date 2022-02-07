@@ -30,17 +30,26 @@ export default  function ChatList(){
 
   
   const getListUser = async()=>{
-    await axios.get("http://localhost:5000/api/listuser", {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
+    await axios.get("http://localhost:5000/api/listusercongty", {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
        setListUser(res.data.payload)
      
        }).catch(err=>{   
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+      
   })
 }
 
   const informationUserLogin = async ()=>{
     await axios.get("http://localhost:5000/api/informationUserLogin", {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
       setUserLogin(res.data)
+      console.log(userLogin)
        }).catch(err=>{   
+        if(err.response.data.message ==="erroruser"){
+          return  history.push("/login") ;
+         }
+       
   })
   }
   
@@ -78,10 +87,15 @@ export default  function ChatList(){
     useEffect(() => {
       const getMessagesUerChat = async () => {
         try {
-          const res = await axios.get("http://localhost:5000/api/messagechat/"+userLogin.id +"/"+contentUserChat.id);
-          setMessage(res.data);
+          if (contentUserChat !=false){
+
+          
+          const res = await axios.get("http://localhost:5000/api/messagechat/"+userLogin.id +"/"+contentUserChat.id , {headers: {Authorization: `Bearer ${token}`} });
+          setMessage(res.data); }
         } catch (err) {
-          console.log(err);
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
         }
       };
       getMessagesUerChat();
@@ -110,11 +124,14 @@ export default  function ChatList(){
 
     
     try {
-      const res = await axios.post("http://localhost:5000/api/messages", dataChat);
+      const res = await axios.post("http://localhost:5000/api/messages", dataChat , {headers: {Authorization: `Bearer ${token}`} });
      // setMessages([...messages, res.data]);
       setTextChat("");
     } catch (err) {
-      console.log(err);
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+    
     }
   }
 
@@ -208,16 +225,14 @@ export default  function ChatList(){
           <div className="chat__items" >
 
             {  message?.length > 2  &&  message?.map((item, index) => {
-                {console.log(message.length)}
               if(item.idUserChat ===userLogin.id ){
                 return (
                   
                   <ChatItem
-                    animationDelay={index + 2}
+                   
                     key={index}
                     msg={item.textChat}
                     avatar={userLogin.avatar}
-                    userChat = {1}
                     time = {item.createdAt}
                   />
                 );

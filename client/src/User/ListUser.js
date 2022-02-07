@@ -7,9 +7,11 @@ import { Button ,Modal ,Form ,Col} from "react-bootstrap";
 import Slibar from '../slibar/slibar'
 import './listuser.css'
 import Header from './../Header/Header'
+import { useHistory } from "react-router-dom";
 function ListUser() {
 
   const token = Cookies.get("cookielogin");
+  let history = useHistory();
      const [idDelete ,setIdDelete]=useState(false)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -58,10 +60,17 @@ function ListUser() {
       }
       
       const getListUser = async()=>{
-        await axios.get("http://localhost:5000/api/listuser" ).then((res)=>{
+        await axios.get("http://localhost:5000/api/listuser" , { headers: { Authorization: `Bearer ${token}` }} ).then((res)=>{
        
             setListUser(res.data.payload)    
            }).catch(err=>{   
+            if(err.response.data.message ==="erroruser"){
+              return  history.push("/login") ;
+             }
+            if( err.response.data.message === "errorrole" ){
+            
+             return  history.push("/login") ;
+              }
       })
     }
 
@@ -81,7 +90,7 @@ function ListUser() {
           role:register.role,
           avatar:avatar
         }
-          await axios.post("http://localhost:5000/api/register" ,  dataregister ,{config}).then((res)=>{
+          await axios.post("http://localhost:5000/api/register" ,  dataregister ,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
             toast.success(res.data.payload)
             setregister({
               ten:'',
@@ -93,7 +102,13 @@ function ListUser() {
           setshowcreateuser(false)
 
           }).catch(err=>{
-
+            if(err.response.data.message ==="erroruser"){
+              return  history.push("/login") ;
+             }
+            if( err.response.data.message === "errorrole" ){
+            
+             return  history.push("/login") ;
+              }
             if(err.response.data.message ==="emailerror"){
             return  toast.error(err.response.data.payload)
             }else { 
@@ -118,19 +133,31 @@ function ListUser() {
           setListUser(res.data.listUser)
         })
         .catch((err) => {
-          toast.error(err.response.data.msg);
+          if(err.response.data.message ==="erroruser"){
+            return  history.push("/login") ;
+           }
+          if( err.response.data.message === "errorrole" ){
+          
+           return  history.push("/login") ;
+            }
         });
       }
 
       const deleteUser = async()=>{
        
-      await axios.delete(`http://localhost:5000/api/deleteuser/${idDelete}`).then((res)=>{
+      await axios.delete(`http://localhost:5000/api/deleteuser/${idDelete}`,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
   
               toast.success(res.data.payload)
               setShow(false)
               setdeletetb(!deletetb)
              }).catch(err=>{
-               
+              if(err.response.data.message ==="erroruser"){
+                return  history.push("/login") ;
+               }
+              if( err.response.data.message === "errorrole" ){
+              
+               return  history.push("/login") ;
+                }
              })
     }
       
