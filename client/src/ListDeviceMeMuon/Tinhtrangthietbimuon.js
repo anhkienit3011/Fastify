@@ -54,7 +54,7 @@ function Tinhtrangthietbimuon() {
 
    <th>{(data1.createdAt).slice(0, 10)}</th>
    <th>{(data1.datetra).slice(0, 10)}</th>
-   <th>{ (data1.trangthai === 2)?"Bị từ chối":((data1.trangthai === 1)?"Đồng ý":"Chưa duyệt" )}</th>
+   <th>{ (data1.trangthai === 2)?"Bị từ chối":((data1.trangthai === 1)?"Đang Mượn":"Chưa duyệt" )}</th>
    </tr>     
           
 

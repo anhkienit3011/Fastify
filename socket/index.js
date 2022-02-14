@@ -3,7 +3,7 @@ const io = require("socket.io")(8900, {
       origin: "http://localhost:3000",
     },
   });
-
+  
   let users = [];
 
   let arraysocket = [];
@@ -25,6 +25,7 @@ const removeUser = (socketId) => {
 
   
   io.on("connection", (socket) => {
+    console.log("??????????????")
     arraysocket.push(socket.id)
     console.log(users)
     io.emit("getUsers",users)
@@ -47,12 +48,13 @@ const removeUser = (socketId) => {
       });
     }
   
-
+    if(usersend ){ 
       io.to(usersend.socketId).emit("getMessage", {
         senderId,
         text,
         createdAt
       });
+    }
     
     });
 

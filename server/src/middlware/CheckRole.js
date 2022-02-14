@@ -7,7 +7,6 @@ module.exports = fp(async function(fastify, opts) {
       
      const {email} = request.user
      const datauser =  await db.User.findOne({ where: { email } });
-     console.log(datauser)
      if(datauser.role==="User"){
       return reply.code(400).send(BaseService.ERROR(null ,"errorrole"))
      }

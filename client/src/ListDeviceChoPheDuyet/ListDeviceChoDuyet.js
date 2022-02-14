@@ -61,6 +61,7 @@ function ListDeviceChoDuyet() {
 
 
   const handleShowdy  = (e)=>{
+    console.log(e)
     setId(e)
     setShow1(true)
   }
@@ -181,7 +182,7 @@ closeOnClick/>
 
      <tr key={data1.id}>
        <td>{index}</td>
-       <td>{data1.email}</td>
+       <td>{data1.User.email}</td>
         <td>{data1.Device.namedevice}</td>
         <td>{data1.numberm}</td>
        

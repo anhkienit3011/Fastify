@@ -6,7 +6,7 @@ const fp = require('fastify-plugin');
 const status  = async (fastify) => {
  fastify.post( "/api/createdevice", {schema: createDevice , preValidation: [fastify.authenticate ,fastify.authencheckadmin]  } , controllers.createdevice);
  
- fastify.post( "/api/editedevice", {  preValidation: [fastify.authenticate ,fastify.authencheckadmin]  } , controllers.editedevice);
+ fastify.put( "/api/editedevice", {  preValidation: [fastify.authenticate ,fastify.authencheckadmin]  } , controllers.editedevice);
  fastify.get( "/api/listdevice" ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.listdevice  )
  fastify.delete("/api/deletedevice/:id"  ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.deletedevice  )
  fastify.get( "/api/listdevicem"  ,{ preValidation: [fastify.authenticate] },controllers.listdevicemdevice  )

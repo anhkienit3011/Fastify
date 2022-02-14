@@ -10,14 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      DeviceMuon.belongsTo(models.Device)
+    //  models.Device.belongsToMany(models.User,{through: "DeviceMuon"})
+     // models.User.belongsToMany(models.Device, {through: "DeviceMuon"})
+       DeviceMuon.belongsTo(models.Device)
+       DeviceMuon.belongsTo(models.User)
+
     }
   };
   DeviceMuon.init({
     datetra: DataTypes.DATE,
     DeviceId: DataTypes.INTEGER,
     numberm: DataTypes.INTEGER,
-    email: DataTypes.STRING,
+    UserId: DataTypes.INTEGER,
     trangthai:DataTypes.INTEGER
   }, {
     sequelize,

@@ -14,9 +14,6 @@ module.exports = {
       textChat: {
         type: Sequelize.STRING
       },
-      image: {
-        type: Sequelize.STRING
-      },
       idUserChat:{
         type: Sequelize.INTEGER,
       },

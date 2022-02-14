@@ -8,6 +8,7 @@ import Header from "../../Header/Header"
 import { io } from "socket.io-client";
 import moment from "moment";
 import ChatItem  from "../ChatItem";
+import { useHistory } from "react-router-dom";
 export default  function ChatList(){
 
   const [listUser , setListUser] = useState(false)
@@ -19,7 +20,7 @@ export default  function ChatList(){
   const [contentUserChat , setcontentUserChat] = useState(false)
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const scrollRef = useRef();
-
+  const history = useHistory()
 
   useEffect(() => {
    informationUserLogin()
@@ -75,7 +76,7 @@ export default  function ChatList(){
 
 
     useEffect(() => {
-      setMessage(oldMsgs => [...oldMsgs, arrivalMessage])
+      setMessage( [...message, arrivalMessage])
        
     }, [arrivalMessage, contentUserChat]);
 
@@ -225,15 +226,15 @@ export default  function ChatList(){
           <div className="chat__items" >
 
             {  message?.length > 2  &&  message?.map((item, index) => {
-              if(item.idUserChat ===userLogin.id ){
+              if(item?.idUserChat ===userLogin?.id ){
                 return (
                   
                   <ChatItem
                    
                     key={index}
-                    msg={item.textChat}
-                    avatar={userLogin.avatar}
-                    time = {item.createdAt}
+                    msg={item?.textChat}
+                    avatar={userLogin?.avatar}
+                    time = {item?.createdAt}
                   />
                 );
               }else{
@@ -241,10 +242,10 @@ export default  function ChatList(){
                   <ChatItem
                     animationDelay={index + 2}
                     key={index}
-                    msg={item.textChat}
-                    avatar={contentUserChat.avatar}
+                    msg={item?.textChat}
+                    avatar={contentUserChat?.avatar}
                     userChat = {0}
-                    time = {item.createdAt}
+                    time = {item?.createdAt}
                   />
                 );
               }

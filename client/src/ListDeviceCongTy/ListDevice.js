@@ -7,6 +7,7 @@ import Slibar from "../slibar/slibar.js";
 import { Button, Modal, Form, Col } from "react-bootstrap";
 import "./listdevice.scss";
 import Header from "../Header/Header";
+import { useHistory } from "react-router-dom";
 function ListDevice() {
   const [id, setid] = useState(false);
   const [show, setShow] = useState(false);
@@ -17,6 +18,7 @@ function ListDevice() {
   const [listdevice, setlistdivice] = useState(null);
   const [listNhom, setListNhom] = useState(null);
   const [nhom, setNhom] = useState(0);
+  const history = useHistory();
   const [idedit , setidEdit] = useState(false)
   const [baseImage, setBaseImage] = useState({
     img: null,
@@ -53,7 +55,7 @@ function ListDevice() {
   }
   const handleCloseEdit = ()=>{
     setshoweditdevice(false)
-    setBaseImage(false)
+    setBaseImage({img:null})
   }
   const handleUpload = (e) => {
     const reader = new FileReader();
@@ -147,11 +149,17 @@ function ListDevice() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
+        console.log(res.data)
         toast.success(res.data.msg);
         setShow(false);
         setdeletetb(!deletetb);
       })
       .catch((err) => {
+          
+         
+        if(err.response.data.msg === "errordelete"){
+          return  toast.error("Vẫn còn thiết bị đang mượn nên không thể xóa")
+        }
         if (err.response.data.message === "erroruser") {
           return history.push("/login");
         }
@@ -162,9 +170,6 @@ function ListDevice() {
   };
   const sendData = async (e) => {
     e.preventDefault();
-    const config = {
-      "Content-Type": "application/json",
-    };
     const dataDevicecode = {
       idnhoma: Number(value_device.idnhom),
       device_name: value_device.device_name,
@@ -184,7 +189,7 @@ function ListDevice() {
           idnhom: "",
         });
         setBaseImage({
-          img: false,
+          img: null,
         });
 
         toast.success(res.data.msg);
@@ -208,26 +213,24 @@ function ListDevice() {
 
   const sendDataEdit =async (e) => {
     e.preventDefault();
-    const config = {
-      "Content-Type": "application/json",
-    };
     let dataDevicecode = null
-    if(baseImage){
+    if(baseImage===null){
        dataDevicecode = {
         idnhoma: Number(value_deviceedit.namenhomedit),
         device_name: value_deviceedit.device_nameedit,
-        device_quantity: Number(value_deviceedit.device_quantityedit),
-        imagedevice: baseImage.img,
+        device_quantity: Number(value_deviceedit.device_quantityedit), 
+        imagedevice:false,
         giadevice: Number(value_deviceedit.giadeviceedit),
-        id : data1.id
+        id :idedit
       };
     }else{
        dataDevicecode = {
         idnhoma: Number(value_deviceedit.namenhomedit),
         device_name: value_deviceedit.device_nameedit,
         device_quantity: Number(value_deviceedit.device_quantityedit),
+        imagedevice: baseImage.img,
         giadevice: Number(value_deviceedit.giadeviceedit),
-        id : data1.id
+        id : idedit
       };
     }
   
@@ -243,14 +246,23 @@ function ListDevice() {
           idnhom: "",
         });
         setBaseImage({
-          img: false,
+          img: null,
         });
 
         toast.success(res.data.msg);
-        setshowcreatedevice(false);
+        setshoweditdevice(false)
+        setdeletetb(!deletetb);
+        
+        
       })
       .catch((err) => {
-        if (err.response.data.message === "msgnhom") {
+
+        if (err.response.data.message === "msgnhom" || err.response.data.message === "msgdevice" 
+        ||err.response.data.message === "giadevice" || err.response.data.message === "tendevice" || err.response.data.message === "soluongdevice") {
+          return toast.error(err.response.data.payload);
+        }
+        
+        if (err.response.data.message === "msgdevice") {
           return toast.error(err.response.data.payload);
         }
         if (err.response.data.message === "erroruser") {
@@ -522,7 +534,7 @@ function ListDevice() {
             <Form.Control
               type="text"
               placeholder="Tên thiết bị "
-              name="device_name"
+              name="device_nameedit"
               value={value_deviceedit.device_nameedit}
               onChange={getdatadeviceedit}
             />
@@ -534,7 +546,7 @@ function ListDevice() {
               type="number"
               placeholder="So luong"
               min="1"
-              name="device_quantity"
+              name="device_quantityedit"
               value={value_deviceedit.device_quantityedit}
               onChange={getdatadeviceedit}
             />
@@ -577,7 +589,7 @@ function ListDevice() {
             <br />
             <input
               type="number"
-              name="giadevice"
+              name="giadeviceedit"
               min="1"
               placeholder="VNĐ"
               onChange={getdatadeviceedit}

@@ -18,12 +18,17 @@ module.exports = {
           key: 'id', 
       }
       },
+      UserId:{
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id', 
+      }
+    },
       numberm: {
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING
-      }, trangthai: {
+     trangthai: {
         type: Sequelize.INTEGER
       },
       createdAt: {

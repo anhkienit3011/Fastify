@@ -50,6 +50,114 @@ fastify.register(require('fastify-jwt'), {
   fastify.register(require('./src/router/User'));
   fastify.register(require('./src/router/Device'));
   fastify.register(require('./src/router/Message'));
+
+
+
+  // cronjob
+
+
+  const nodemailer = require('nodemailer')
+  const { google } = require('googleapis')
+  const CLIENT_ID  = '108700255244-j1nejv58it5t3qrs7cn38jtp6ms5b9ci.apps.googleusercontent.com'
+  const CLIENT_SECRET='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'
+  const REDIRECT_URL ='https://developers.google.com/oauthplayground'
+  const REFEST_TOKEN='1//04T5ELVp_XHLyCgYIARAAGAQSNwF-L9IrCudoP_eaVYwm47hrIehQ097Wbtf6FoTZBuuhAMoBLhjy3axgAKXz17ikDRvV3x1u8rU'
+  const cron = require('cron');
+  const db = require('./src/models/index')
+  const Op = require('Sequelize').Op;
+
+
+  const oAuth2Client = new google.auth.OAuth2(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    REDIRECT_URL
+  );
+  oAuth2Client.setCredentials({ refresh_token:REFEST_TOKEN });
+  google.options({ auth: oAuth2Client });
+  
+  const accessToken = new Promise((resolve, reject) => {
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) console.log(err); // Handling the errors
+      else resolve(token);
+    });
+  });
+
+  const transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: 'muadongyeuthuong3x@gmail.com',
+      clientId: CLIENT_ID,
+      clientSecret:CLIENT_SECRET,
+      refreshToken: REFEST_TOKEN,
+      accessToken: accessToken,
+    },
+  });
+
+  async function sendMail() {
+
+      const datasendEmailpush = []
+      const datasendemail =   await db.DeviceMuon.findAll({
+          where:{
+              datetra  : {
+                  [Op.eq]: new Date("2022-02-17")
+                }
+          },
+          include: [
+              {
+            model: db.User,
+            attributes: ["email"],
+        },
+        {
+            model: db.Device,
+            attributes: ["namedevice"]
+        }],
+  
+      })
+     console.log("A")
+    datasendemail.forEach(data=>{
+      
+      const itemSendEamil = {
+      email:data.User.email,
+      numberm:data.numberm,
+      namedevice:data.Device.namedevice
+    }
+    datasendEmailpush.push(itemSendEamil)
+    })
+    datasendEmailpush.forEach(async data=>{
+     let mailOptions = {
+        from: 'muadongyeuthuong3x@gmail.com',
+        to:data.email,
+        subject: 'Công ty công nghệ số việt Nam',
+        text: 'Đến ngày trả thiết bị ',
+        html:`Đến ngày trả thiết bị bạn mượn của công ty`,
+      };
+      const result = await transport.sendMail(mailOptions);
+       return  result
+    })
+ 
+  }
+  
+  sendMail()
+
+
+  const job = new cron.CronJob({
+    cronTime: '00 22 22 * * 0-6', 
+    onTick: function() {
+      sendMail()
+      .then(() => console.log('Email sent oke'))
+      .catch((error) => console.log(error.message));
+    },
+    start: true, 
+    timeZone: 'Asia/Ho_Chi_Minh' // Lưu ý set lại time zone cho đúng 
+  });
+  
+  job.start();
+
+  //end 
+
+
+
   const start = async () => {
     try {
       await fastify.listen(5000);

@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   tableChat.init({
     idRowUserChat : DataTypes.INTEGER,
     textChat: DataTypes.STRING,
-    image: DataTypes.STRING,
     idUserChat: DataTypes.INTEGER,
   
   }, {
