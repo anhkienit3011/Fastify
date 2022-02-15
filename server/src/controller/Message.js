@@ -10,6 +10,9 @@ const postMessage = async (req,res)=>{
     try {
         
         const {userid , userChat , text , createdAt } = req.body
+        const data = {
+            idUserChat :userid ,textChat: text , createdAt
+        }
         let idchat=null;
         
         const time =  moment(createdAt).format("YYYY-MM-DD hh:mm:ss");
@@ -42,7 +45,7 @@ const postMessage = async (req,res)=>{
         createdAt:time
         })
       
-        return  res.send({});
+        return  res.send({ data  });
     } catch (error) {
         throw boom.boomify(error);  
     }

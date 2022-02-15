@@ -1,4 +1,4 @@
-import React , {useEffect ,useRef} from 'react'
+import React , {useEffect ,useRef } from 'react'
 import { BrowserRouter as Router , Route , Switch  ,Redirect} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListUser from './User/ListUser'
@@ -16,11 +16,20 @@ import ChatList from "./UserChat/chatList/ChatList"
 import Chatcongty from "./GroupChat/ChatCongTy"
 import  Loginweb from "./login/Loginweb.js"
 import Cookies from "js-cookie";
-
+import axios from 'axios'
 function App() {
   const token = Cookies.get("cookielogin")
+  const socket = useRef();
+  const informationUserLogin = async ()=>{
+    await axios.get("http://localhost:5000/api/informationUserLogin", {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
+      socket.current.emit("addUser", res.data.id);
+       }).catch(err=>{   
 
-
+  })
+  }
+  useEffect(()=>{
+    informationUserLogin()
+  },[token])
 
   return (
     <div className="App">

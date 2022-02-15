@@ -154,9 +154,7 @@ closeOnClick/>
   <Form.Group className="mb-3" controlId="formBasicName">
     <Form.Label>Tên User</Form.Label>
     <Form.Control type="text" placeholder="Name for user"  name="ten" value={editUser.ten}  onChange={Laydata} />
-    <Form.Text className="text-muted">
-      We'll never share your email with anyone else.
-    </Form.Text>
+
   </Form.Group>
 
 
@@ -165,9 +163,7 @@ closeOnClick/>
   <Form.Group className="mb-3" controlId="formBasicPassword">
     <Form.Label> Password New </Form.Label>
     <Form.Control type="password" placeholder="Password" name="password" value={editUser.password}  onChange={Laydata} />
-    <Form.Text className="text-muted">
-      We'll never share your email with anyone else.
-    </Form.Text>
+
   </Form.Group>
 
   <Form.Group className="mb-3" controlId="formBasicPassword">

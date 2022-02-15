@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
      // models.User.belongsToMany(models.Device, {through: "DeviceMuon"})
        DeviceMuon.belongsTo(models.Device)
        DeviceMuon.belongsTo(models.User)
+      //  DeviceMuon.hasMany(models.Nhomthietbi)
 
     }
   };

@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect,  } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import Slibar from "../slibar/slibar.js";
+import { useHistory } from "react-router-dom";
 import "./ttdevice.scss";
 import Header from "../Header/Header"
 function Tinhtrangthietbimuon() {
   const token = Cookies.get("cookielogin");
   const [listdata ,setListData] = useState(null)
+  const history = useHistory()
   useEffect(async () => {
     await axios.get("http://localhost:5000/api/showdeviceyou", {
         headers: { Authorization: `Bearer ${token}` },

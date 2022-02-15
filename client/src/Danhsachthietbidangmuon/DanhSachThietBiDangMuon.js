@@ -28,19 +28,42 @@ function DanhsachThietBiDangMuon() {
     const [numbermuontiep , setnumbermuontiep] = useState(0)
     const [numberBEmuon , setnumberBEmuon]= useState(0)
     const [datemuontiep ,setdatemuontiep] = useState(false)
-    const getTimemuon = (e)=>{
-      const TimeChange = moment(e).format('YYYY-MM-DD');
-       setdatetra(TimeChange)
-       
+    const [timeMuon, setTimeMuon] = useState(false)
+    const [timeTra, setTimeTra] = useState(false)
+    const [tienthietbi ,setTienthietbi]  = useState(false)
+    const history = useHistory()
+    const getTimeMuon = (e)=>{
+     
+      if(new Date(timeTra).getTime() < new Date(moment(e).format('YYYY-MM-DD')).getTime() && timeTra !=false  ){
+        
+        toast.error("Thời gian trả phải lớn hơn hoặc bằng thời gian mượn");
+      }else{
+        const TimeChange = moment(e).format('YYYY-MM-DD');
+        setTimeMuon(TimeChange)
+      }
+     
+      }
+    
+      const getTimeTra = (e)=>{
+     
+        if(new Date(timeMuon).getTime() > new Date(moment(e).format('YYYY-MM-DD')).getTime() && timeMuon !=false){
+         
+          toast.error("Thời gian trả phải lớn hơn hoặc bằng thời gian mượn");
+        }else{
+          const TimeChange = moment(e).format('YYYY-MM-DD');
+          setTimeTra(TimeChange)
+        }
       }
       
+
      const getTimemuontiep = (e)=>{
       const TimeChange = moment(e).format('YYYY-MM-DD');
       setdatemuontiep(TimeChange)
        
       }
 
-      const handleShow1 = (id1 ,number) =>{
+      const handleShow1 = (id1 ,number , gia) =>{
+        setTienthietbi(gia)
         setShow1(true)
         setid(id1)
         setnumberBEmuon(number)
@@ -121,9 +144,10 @@ function DanhsachThietBiDangMuon() {
        const handleSearchDevice = async()=>{
         const data = {
           nameseach:nameseach,
-          nhom:nhom
+          timeTra:timeTra,
+          timeMuon:timeMuon
         }
-        await axios.post("http://localhost:5000/api/searchdevicemuon",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
+        await axios.post("http://localhost:5000/api/searchthietbimuonthanhcong",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
         setlistdivice(res.data.listDevice)
         }).catch(err=>{
           if(err.response.data.message ==="erroruser"){
@@ -156,26 +180,27 @@ closeOnClick/>
                      
                     </Col>
                    
-                    <select name="" id="" className="selectnhom marginToplist" onChange = {(e)=>setNhom(e.target.value)}>
+                    {/* <select name="" id="" className="selectnhom marginToplist" onChange = {(e)=>setNhom(e.target.value)}>
                         <option value="0">Tất cả nhóm</option>
                          {listNhom === null ?"data ..": listNhom.map((nhom ,index)=>{return(
      <option value={nhom.id} key={index}>{nhom.Name}</option>
    )})} 
-                      </select> 
+                      </select>  */}
                      
-                    
+                    <div style={{marginTop:"7px" , marginLeft:"50px", display:"flex"}}> 
                       <Form.Group>
-        <Form.Label >Ngày duyệt : </Form.Label>
+        <Form.Label >Ngày Mượn : </Form.Label>
          
-    <DatePicker value={datetra} onChange={getTimemuon} />
+    <DatePicker value={timeMuon} onChange={getTimeMuon} />
      </Form.Group>
 
 
      <Form.Group>
         <Form.Label  >Ngày Trả : </Form.Label>
    
-        <DatePicker value={datetra} onChange={getTimemuon} />
+        <DatePicker value={timeTra} onChange={getTimeTra} />
      </Form.Group>
+     </div>
 
 
                     <button type="button" className="btn btn-success buttonsearch marginToplist" onClick={()=>handleSearchDevice()}>
@@ -187,6 +212,7 @@ closeOnClick/>
 
 <tr>
     <th>STT</th>
+    <th>Email</th>
     <th>Tên thiết bị</th>
     <th>Ảnh</th>
     <th> Số lượng mượn </th>
@@ -197,17 +223,16 @@ closeOnClick/>
   </tr>
   {listdevice ===null ? "Loadding...." : listdevice.map((data1 ,index)=>{
      return( 
-
      <tr key={data1.id}>
     <td>{index}</td>
+    <td>{data1.User.email}</td>
     <td>{data1.Device.namedevice}</td>
     <td><img src={"http://localhost:5000/src/uploads/"+data1.Device.imgdevice}  alt="" className="imgavatar"/></td>
     <td>{data1.numberm}</td>
     <td>{(data1.Device.tienthietbi).toLocaleString()}</td>
     <td > {( data1.createdAt).slice(0, 10)}  </td>
     <td > {( data1.datetra).slice(0, 10)}  </td>
-  
-    <td> <Button onClick={()=>handleShow1(data1.id  , data1.numberm)}>Trả Thiết Bị</Button> </td>
+    <td> <Button onClick={()=>handleShow1(data1.id  , data1.numberm , data1.Device.tienthietbi)}>Trả Thiết Bị</Button> </td>
   
   </tr>     ) })
 }
@@ -235,6 +260,13 @@ closeOnClick/>
         <Form.Label>Số lượng mất : </Form.Label>
         <Form.Control type="number" placeholder="So luong muon" value={numbermat}  min="0"  onChange={(e)=>setnumbermat(e.target.value)}/>
      </Form.Group>
+   
+   {numbermat>0 ? <Form.Group>
+        <Form.Label>Số Tiền Phải Đền  : </Form.Label>
+        <Form.Control type="number"  value={(numbermat*tienthietbi)} disabled /> VNĐ
+     </Form.Group> : null
+   }
+    
 
      <Form.Group>
         <Form.Label>Số lượng mượn tiếp : </Form.Label>

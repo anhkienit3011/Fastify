@@ -6,7 +6,7 @@ const ChatItem = (props) => {
     const { avatar , msg ,userChat ,time} = props
     return (
         <div
-        onClick ={()=>setviewchat(!viewchat)}
+  
         style={{ animationDelay: `0s` }}
         className={`chat__item ${userChat ===0 ?`other` : ""}`}
       >

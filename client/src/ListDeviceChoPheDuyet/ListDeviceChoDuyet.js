@@ -120,6 +120,7 @@ function ListDeviceChoDuyet() {
     await axios.post("http://localhost:5000/api/searchdevicechoduyet",data , {headers: {Authorization: `Bearer ${token}` }}).then((res)=>{
     setListData(res.data.listDevice)
     }).catch(err=>{
+      console.log(err.response.data)
       if(err.response.data.message ==="erroruser"){
         return  history.push("/login") ;
        }

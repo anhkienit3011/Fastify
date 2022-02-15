@@ -40,7 +40,7 @@ module.exports = {
       name: 'Thu heo heo',
       email: 'thuheoheo@gmail.com',
       password: await bcrypt.hash("12345678",saltRounds),
-      avatar:'1640612798339.png',
+      avatar:'1644276811795.png',
       role:"Admin",
       createdAt: new Date(),
       updatedAt: new Date()

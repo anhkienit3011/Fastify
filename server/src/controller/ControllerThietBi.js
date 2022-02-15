@@ -371,12 +371,22 @@ const searchDevicechoduyet = async(req, res) => {
                     namedevice: {
                         [Op.like]: `%${nameseach}%`,
                     },
+                }},
+                {
+                    model: db.User,
+                    
+                }
+             ],
+             where:{
+                trangthai: {
+                    [Op.eq]: 0,
                 },
-            }, ],
+             }
         });
     } else {
         data = await db.DeviceMuon.findAll({
-            include: [{
+            include: [
+                {
                 model: db.Device,
                 where: {
                     namedevice: {
@@ -386,7 +396,16 @@ const searchDevicechoduyet = async(req, res) => {
                         [Op.eq]: numbernhom,
                     },
                 },
-            }, ],
+            }, 
+            {
+                model: db.User,
+                
+            }
+        ],
+        where:{
+            trangthai: {
+                [Op.eq]: 0,
+            }}
         });
     }
     return res.send({ listDevice: data });
@@ -603,10 +622,16 @@ const listdevicedangmuon = async(req, res) => {
                     [Op.eq]: 1,
                 },
             },
-            include: [{
+            attributes: ["id" ,"datetra" , "numberm", "trangthai","createdAt"],
+            include: [
+                {
                 model: db.Device,
                 attributes: ["imgdevice", "namedevice", "tienthietbi"],
-            }, ],
+            },  {
+                model: db.User,
+                attributes: ["email"],
+            },
+         ],
         });
 
         return res.send(data);
@@ -619,7 +644,7 @@ const trathietbi = async(req, res) => {
         if (numbertra < 0 || numbermat < 0 || numbermuontiep < 0) {
             return res
                 .code(400)
-                .send({ msg: "Chế độ thiết bị từng loại phải lớn hơn 0" });
+                .send({ msg: "Số lượng thiết bị từng loại phải lớn hơn hoặc bằng 0" });
         }
         const datadevicem = await db.DeviceMuon.findOne({ where: { id } });
         const tongmuon = datadevicem.numberm;
@@ -686,20 +711,128 @@ const trathietbi = async(req, res) => {
                     where: { id }
                 })
             }
-
-
-
         }
-
-
-
-        return res.send(BaseService.SUCCESS(null, "Trả thành công "));
+    return res.send(BaseService.SUCCESS(null, "Trả thành công "));
     } catch (error) {}
 };
 
 const searchthietbidangmuon = async(req, res) => {
     try {
-        console.log(req.body)
+        const { nameseach  ,timeTra , timeMuon } =req.body
+        try {
+          let data = null;
+          if(timeMuon == false &&  timeTra  !=false){
+            data =   await db.DeviceMuon.findAll({
+                where: {
+                    trangthai: {
+                        [Op.eq]: 1,
+                    }, 
+                      datetra:{
+                        [Op.lte]: new Date(timeTra)
+                      }
+
+                },
+                attributes: ["id" ,"datetra" , "numberm", "trangthai","createdAt"],
+                include: [
+                    {
+                    model: db.Device,
+                    where: {
+                        namedevice:{ 
+                            [Op.like]:`%${nameseach}%`
+                          }},
+                    attributes: ["imgdevice", "namedevice", "tienthietbi"],
+                },  {
+                    model: db.User,
+                    attributes: ["email"],
+                },
+             ],
+            });
+          }else if (timeTra  == false && timeMuon != false){
+            data =   await db.DeviceMuon.findAll({
+                where: {
+                    trangthai: {
+                        [Op.eq]: 1,
+                    }, 
+                    createdAt: {
+                        [Op.gte]:new Date(timeMuon)
+                        
+                      } ,
+                },
+                attributes: ["id" ,"datetra" , "numberm", "trangthai","createdAt"],
+                include: [
+                    {
+                    model: db.Device,
+                    where: {
+                        namedevice:{ 
+                            [Op.like]:`%${nameseach}%`
+                          }},
+                    attributes: ["imgdevice", "namedevice", "tienthietbi"],
+                },  {
+                    model: db.User,
+                    attributes: ["email"],
+                },
+             ],
+            });
+          }else if (timeTra == false && timeMuon == false){
+            data =   await db.DeviceMuon.findAll({
+                where: {
+                    trangthai: {
+                        [Op.eq]: 1,
+                    },
+                },
+                attributes: ["id" ,"datetra" , "numberm", "trangthai","createdAt"],
+                include: [
+                    {
+                    model: db.Device,
+                    where: {
+                        namedevice:{ 
+                            [Op.like]:`%${nameseach}%`
+                          }},
+                    attributes: ["imgdevice", "namedevice", "tienthietbi"],
+                },  {
+                    model: db.User,
+                    attributes: ["email"],
+                },
+             ],
+            });
+          }
+          else{
+          data =   await db.DeviceMuon.findAll({
+                where: {
+                    trangthai: {
+                        [Op.eq]: 1,
+                    }, 
+                    createdAt: {
+                        [Op.gte]:new Date(timeMuon)
+                        
+                      } ,
+                      datetra:{
+                        [Op.lte]: new Date(timeTra)
+                      }
+
+                },
+                attributes: ["id" ,"datetra" , "numberm", "trangthai","createdAt"],
+                include: [
+                    {
+                    model: db.Device,
+                    where: {
+                        namedevice:{ 
+                            [Op.like]:`%${nameseach}%`
+                          }},
+                    attributes: ["imgdevice", "namedevice", "tienthietbi"],
+                },  {
+                    model: db.User,
+                    attributes: ["email"],
+                },
+             ],
+            });
+          }
+          
+
+           console.log(data)
+    
+            return res.send({listDevice : data});
+        } catch (error) {}
     } catch (error) {
 
     }

@@ -65,11 +65,14 @@ const getListUserDBcongty = async(req,res)=>{
 const deleteUserDB = async(req ,reply)=>{
     try {
     let {id} = req.params;
+
     const datadelete = await db.User.findOne({
         where: {
             id: id
          }
     })
+    await db.tableIdUserIdChats.destroy({idUser:datadelete.id})
+     
 
     const image ="./src/uploads/" +datadelete.avatar
    fs.unlinkSync((image), err => {

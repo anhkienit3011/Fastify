@@ -47,7 +47,7 @@ const status  = async (fastify) => {
 
  fastify.post("/api/trathietbi" ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.trathietbi)
  
- fastify.get("/api/searchthietbimuonthanhcong" ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.searchthietbidangmuon)
+ fastify.post("/api/searchthietbimuonthanhcong" ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.searchthietbidangmuon)
  
 }
 
