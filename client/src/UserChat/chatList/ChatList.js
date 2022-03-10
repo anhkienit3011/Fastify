@@ -160,7 +160,7 @@ export default  function ChatList(){
                   return 
                 }else{ 
                    return (
-                    <div style ={{display:"flex"}} onClick = {()=>getDataUserChat(item)} key={index}>
+                    <div style ={{display:"flex" ,paddingBottom:"10px"}} onClick = {()=>getDataUserChat(item)} key={index} >
                     <Avatar
                       image={
                         (item.avatar) ? item.avatar : "http://placehold.it/80x80"
@@ -232,14 +232,13 @@ export default  function ChatList(){
         </div>
         <div className="content__footer">
           <div className="sendNewMessage">
-            <button className="addFiles">
-              <i className="fa fa-plus"></i>
-            </button>
+          
             <input
               type="text"
               placeholder="Type a message here"
               onChange = {onChangeGetTextChat}
               value={textChat}
+              style={{border:"1px solid black"  , padding:"10px" , borderRadius:"10px" ,marginRight:"10px"}}
             />
 
             { textChat && textChat.length >1?

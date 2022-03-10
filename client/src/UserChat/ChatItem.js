@@ -12,7 +12,7 @@ const ChatItem = (props) => {
       >
         <div className="chat__item__content">
           <p className="chat__msg">{msg}</p>
-          <div className="chat__meta">
+          <div className="chat__meta" >
            
      <span style={{color:"while"}}>{ moment(time).format("YYYY-MM-DD hh:mm")}</span>  
           </div>

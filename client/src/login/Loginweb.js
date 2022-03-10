@@ -53,7 +53,7 @@ closeOnClick/>
         <div className="screen__content">
           <form className="login">
             <div className="login__field">
-              <i className="login__icon fas fa-user"></i>
+             <p>User Name :</p>
               <input
                 type="email"
                 className="login__input"
@@ -64,7 +64,7 @@ closeOnClick/>
               />
             </div>
             <div className="login__field">
-              <i className="login__icon fas fa-lock"></i>
+            <p>Password : </p>
               <input
                 type="password"
                 className="login__input"
@@ -79,10 +79,9 @@ closeOnClick/>
               <span className="button__text" >
                 Log In Now
               </span>
-              <i className="button__icon fas fa-chevron-right"></i>
             </button>
           </form>
-          <div className="social-login">
+          <div className="social-login" style={{paddingTop:"10px"}}>
             <h3>KMA</h3>
           </div>
         </div>

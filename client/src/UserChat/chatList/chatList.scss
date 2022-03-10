@@ -215,9 +215,10 @@
     border-radius: 10px 10px 0 10px;
     max-width: 50%;
     min-width: 215px;
+    word-break: break-all;
   }
   .chat__item__content .chat__meta {
-    justify-content: space-between;
+    justify-content: end;
     display: flex;
     margin-top: 10px;
     
@@ -227,6 +228,7 @@
     color: #e7e8ee;
     user-select: none;
     margin-left: 74px;
+
   }
   .chat__msg {
     user-select: none;
