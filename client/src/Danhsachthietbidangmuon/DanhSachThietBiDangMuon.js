@@ -262,8 +262,8 @@ closeOnClick/>
      </Form.Group>
    
    {numbermat>0 ? <Form.Group>
-        <Form.Label>Số Tiền Phải Đền  : </Form.Label>
-        <Form.Control type="number"  value={(numbermat*tienthietbi)} disabled /> VNĐ
+        <Form.Label>Số Tiền Phải Đền (VNĐ) : </Form.Label>
+        <Form.Control type="string"  value={(numbermat*tienthietbi).toLocaleString()} disabled /> 
      </Form.Group> : null
    }
     

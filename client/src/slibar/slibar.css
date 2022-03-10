@@ -135,6 +135,12 @@ header {
     .sidebar li {
         display: flex;
         justify-content: center;
+
+    }
+
+    .sidebar li:hover {
+       background: red;
+        
     }
 
     .main-content {

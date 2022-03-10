@@ -184,7 +184,7 @@ const editedevice = async(req, res) => {
         .send(BaseService.ERROR(`số lượng thiết bị sửa phải lớn hơn 0`, "soluongdevice"));
        }
 
-    if( ( dataedit.quantitydevice - dataedit.soluongconlai) >=device_quantity){
+    if( ( dataedit.quantitydevice - dataedit.soluongconlai) >device_quantity){
         return res
         .code(500)
         .send(BaseService.ERROR(`Không thể sửa nhỏ hơn ${dataedit.quantitydevice - dataedit.soluongconlai} thiết bị đang mượn `, "msgdevice"));
@@ -196,7 +196,7 @@ const editedevice = async(req, res) => {
     .code(500)
     .send(BaseService.ERROR(`Giá thiết bị phải lớn 1  `, "giadevice"));
    }
-
+   const dataconlai = (dataedit.quantitydevice-device_quantity < 0 ? dataedit.soluongconlai- (dataedit.quantitydevice-device_quantity) : dataedit.soluongconlai + (device_quantity-dataedit.quantitydevice ) )
     try {
         if (idnhoma === 0) {
             return res
@@ -207,7 +207,7 @@ const editedevice = async(req, res) => {
             await db.Device.update({
                 namedevice: device_name,
                 quantitydevice: device_quantity,
-                soluongconlai: device_quantity,
+                soluongconlai: dataconlai,
                 tienthietbi: giadevice,
                 NhomthietbiId: idnhoma,
             }, { where: { id } });
@@ -232,7 +232,7 @@ const editedevice = async(req, res) => {
                 namedevice: device_name,
                 quantitydevice: device_quantity,
                 imgdevice: time,
-                soluongconlai: device_quantity,
+                soluongconlai: dataconlai,
                 tienthietbi: giadevice,
                 NhomthietbiId: idnhoma,
             }, { where: { id } });
@@ -837,7 +837,23 @@ const searchthietbidangmuon = async(req, res) => {
 
     }
 }
+
+  const deletenopheduyet = async(req,res)=>{
+    try {
+        const { id } = req.params;
+        await db.DeviceMuon.destroy({
+            where: {
+                id
+            }
+        })
+        return res.send();
+    } catch (error) {
+        throw boom.boomify(error);
+    }
+
+  }
 module.exports = {
+    deletenopheduyet,
     createdevice,
     listdevice,
     deletedevice,

@@ -49,6 +49,10 @@ const status  = async (fastify) => {
  
  fastify.post("/api/searchthietbimuonthanhcong" ,{ preValidation: [fastify.authenticate ,fastify.authencheckadmin] },controllers.searchthietbidangmuon)
  
+ fastify.delete("/api/deletetingtrang/:id" ,{ preValidation: [fastify.authenticate ] },controllers.deletenopheduyet)
+ 
+
 }
+
 
 module.exports = fp(status);

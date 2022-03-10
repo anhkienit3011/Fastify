@@ -15,7 +15,6 @@ function Tinhtrangthietbimuon() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data)
         setListData(res.data);
       })
       .catch((err) => {
@@ -26,6 +25,17 @@ function Tinhtrangthietbimuon() {
        
       });
   }, []);
+
+  const handleDelete = async(id)=>{
+    console.log(id)
+    await axios.delete(`http://localhost:5000/api/deletetingtrang/${id}` , { headers: { Authorization: `Bearer ${token}` }} ).then((res)=>{
+      toast.success("Xóa tình trạng bị từ chối thành công");
+     }).catch(err=>{   
+      if(err.response.data.message ==="erroruser"){
+        return  history.push("/login") ;
+       }
+})
+  }
 
   return (
     <div className="ListDeviceTT">
@@ -56,7 +66,11 @@ function Tinhtrangthietbimuon() {
 
    <th>{(data1.createdAt).slice(0, 10)}</th>
    <th>{(data1.datetra).slice(0, 10)}</th>
-   <th>{ (data1.trangthai === 2)?"Bị từ chối":((data1.trangthai === 1)?"Đang Mượn":"Chưa duyệt" )}</th>
+   <th>{ (data1.trangthai === 2)?   <i
+                          class="fa fa-trash"
+                          aria-hidden="true"
+                          onClick={() => handleDelete(data1.id)}
+                        > (Bị từ chối) </i>   :((data1.trangthai === 1)? <p style={{color:"green"}}>Đang Mượn</p> : <p style={{color:"yellow"}}>Chưa duyệt </p>)}</th>
    </tr>     
           
 
