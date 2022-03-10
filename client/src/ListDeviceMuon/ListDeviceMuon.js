@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
-import './listdevicemuon.scss'
+import './listdevicemuon.css'
 import Header from '../Header/Header'
 import { Button ,Col ,Modal ,Form } from "react-bootstrap";
 import moment from 'moment';
@@ -159,10 +159,10 @@ closeOnClick/>
 
 <tr>
     <th>STT</th>
-    <th>Name Device</th>
-    <th>Image</th>
-    <th>Number  Devices </th>
-    <th>Price Device (VNĐ)</th>
+    <th>Tên thiết bị</th>
+    <th>Ảnh thiết bị</th>
+    <th>Số lượng thiết bị </th>
+    <th>Giá thiết bị (VNĐ)</th>
     <th>Mượn thiết bị</th>
   </tr>
   {listdevice ===null ? "Loadding...." : listdevice.map((data1 ,index)=>{

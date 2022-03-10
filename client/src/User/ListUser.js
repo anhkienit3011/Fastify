@@ -176,7 +176,7 @@ closeOnClick/>
 
         <table>
           <div className="formSearch">
-        <Button className="buttoncreateuser" onClick={()=>handleCreateUser()} > Add User  <span><i className="fa fa-plus" aria-hidden="true"></i></span></Button>
+        <Button className="buttoncreateuser" onClick={()=>handleCreateUser()} >Thêm tài khoản <span><i className="fa fa-plus" aria-hidden="true"></i></span></Button>
         <Col xs={5} className="inputsearch">
                       <Form.Control placeholder="Tìm kiếm thành viên theo tên" onChange = {(e)=>setnamesearch(e.target.value)} />
                     </Col>
@@ -189,12 +189,12 @@ closeOnClick/>
                     </div>
   <tr>
     <th>STT</th>
-    <th>Tên User</th>
+    <th>Tên tài khoản  </th>
     <th>Email</th>
-    <th>Image</th>
-    <th>Role</th>
-    <th>Edit User</th>
-    <th>Delete User</th>
+    <th>Ảnh đại diện</th>
+    <th>Quyền tài khoản </th>
+    <th>Sửa thông tin tài khoản</th>
+    <th>Xóa tài khoản </th>
   </tr>
 
   {listUser ===null ? "Loadding...." : listUser.map((data1 ,index)=>{

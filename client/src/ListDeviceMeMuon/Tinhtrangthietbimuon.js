@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import Slibar from "../slibar/slibar.js";
 import { useHistory } from "react-router-dom";
-import "./ttdevice.scss";
+import "./ttdevice.css";
 import Header from "../Header/Header"
 function Tinhtrangthietbimuon() {
   const token = Cookies.get("cookielogin");
@@ -38,9 +38,9 @@ function Tinhtrangthietbimuon() {
           <table>
             <tr>
               <th>STT</th>
-              <th>Name Device</th>
-              <th>Image</th>
-              <th>Number Devices </th>
+              <th>Tên thiết bị</th>
+              <th>Ảnh thiết bị</th>
+              <th>Số lượng thiết bị </th>
               <th>Thời gian mượn</th>
                <th>Thời gian trả</th>
                <th>Trạng Thái   </th>

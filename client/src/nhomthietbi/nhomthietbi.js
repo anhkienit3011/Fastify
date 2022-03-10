@@ -6,6 +6,7 @@ import { Button, Form, Modal ,Col} from "react-bootstrap";
 import Slibar from "./../slibar/slibar";
 import "./nhomdevice.css";
 import Header from '../Header/Header'
+import { useHistory } from "react-router-dom";
 function nhomthietbi() {
   const [showcreatenhom, setshowcreatenhom] = useState(false);
   const [data, setData] = useState({
@@ -23,6 +24,7 @@ function nhomthietbi() {
   const [listdata ,setListData] = useState(null)
   const [calllist ,setCallist]  =useState(false)
   const [nameseach , setnamesearch]= useState(false);
+  const history = useHistory();
   const [id ,setId]  =useState(false)
   const changeData = (e) => {
     var target = e.target;
@@ -221,8 +223,8 @@ function nhomthietbi() {
             <th>STT</th>
             <th>Tên Nhóm Thiết Bị</th>
             <th> Thời gian mượn tối đa </th>
-            <th>Sửa</th>
-            <th>Xóa</th>
+            <th>Sửa nhóm</th>
+            <th>Xóa nhóm</th>
           </tr>
           {listdata ===null ? "Loadding...." : listdata.map((data1 ,index)=>{
      return(

@@ -207,9 +207,9 @@ closeOnClick/>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Không đồng ý cho mượn</Modal.Title>
+          <Modal.Title>Từ chối cho mượn</Modal.Title>
         </Modal.Header>
-        <Modal.Body> Bạn có chắc không đồng ý cho mượn không !</Modal.Body>
+        <Modal.Body> Bạn có chắc từ chối cho mượn không!</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close

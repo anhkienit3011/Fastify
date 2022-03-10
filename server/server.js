@@ -106,7 +106,7 @@ async function sendMail() {
   const datasendemail = await db.DeviceMuon.findAll({
       where: {
           datetra: {
-              [Op.eq]: new Date("2022-02-17")
+              [Op.eq]: new Date("2022-02-16")
           }
       },
       include: [{
@@ -120,8 +120,9 @@ async function sendMail() {
       ],
 
   })
+  
   datasendemail.forEach(data => {
-
+    console.log(data)
       const itemSendEamil = {
           email: data.User.email,
           numberm: data.numberm,
@@ -136,7 +137,7 @@ async function sendMail() {
           to: data.email,
           subject: 'Công ty công nghệ số việt Nam',
           text: 'Đến ngày trả thiết bị ',
-          html: `Thiết bị ${namedevice} số lượng ${numberm} ngày ${timetra} sẽ hết thời gian mượn thiết bị của bạn . Bạn vui lòng cầm đến công ty trả thiết bị đúng hạn`,
+          html: `Thiết bị ${data.namedevice} (số lượng ${data.numberm}) sẽ hết hạn vào ngày ${data.timetra}. Bạn vui lòng trả thiết bị đúng hạn`,
       };
       const result = await transport.sendMail(mailOptions);
       return result
@@ -144,7 +145,7 @@ async function sendMail() {
 
 }
 const job = new cron.CronJob({
-  cronTime: '00 44 22 * * 0-6',
+  cronTime: '00 43 17 * * 0-6',
   onTick: function() {
       sendMail()
           .then(() => console.log('Email sent oke'))

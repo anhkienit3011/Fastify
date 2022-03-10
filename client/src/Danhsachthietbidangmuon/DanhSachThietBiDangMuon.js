@@ -9,7 +9,7 @@ import Cookies from 'js-cookie'
 import Slibar from '../slibar/slibar.js'
 import Header from '../Header/Header'
 import { Button ,Col ,Modal ,Form } from "react-bootstrap";
-import './danhsachm.scss'
+import './danhsachm.css'
 import moment from 'moment';
 function DanhsachThietBiDangMuon() {
   const [nameseach , setnamesearch]= useState('');

@@ -152,14 +152,7 @@ export default  function ChatList(){
           <h2>Chats</h2>
           
         </div>
-        <div className="chatList__search">
-          <div className="search_wrap">
-            <input type="text" placeholder="Search Here" required />
-            <button className="search-btn">
-              <i className="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
+      
 
         <div className="chatlist__items">
               {  listUser?.length > 0   &&  listUser.map((item, index) => {
@@ -175,7 +168,7 @@ export default  function ChatList(){
                     />
                     <div className="userMeta">
                       <p>{item.name}</p>
-                      <span>Online</span>
+                    
                     </div>
                   </div>
                    )

@@ -17,8 +17,9 @@ function Slibar() {
         localStorage.removeItem("avatar")
         localStorage.removeItem("role")
         Cookies.remove("cookielogin")
-        
     }
+    const [st,setst] = useState(4)
+
 
 return( 
 <div className="dasboard">
@@ -35,21 +36,21 @@ return(
         
         <div className="sidebar-menu">
             <ul>
-             {(rolecheck ==="Admin")&&<li>
+             {(rolecheck ==="Admin")&&<li onClick={()=>setst(1)} style={{ background: `(${st}==1) ? #4caf50 :''` }}>
                 <Link to="/listuser">
                         <span className="ti-home"></span>
                         <span>Danh sách User</span>
                     </Link>
                 </li> }
 
-                {(rolecheck ==="Admin")&&  <li>
+                {(rolecheck ==="Admin")&&  <li onClick={()=>setst(2)} >
                 <Link to="/nhomthietbi">
                         <span className="ti-face-smile"></span>
                         <span>Nhóm thiết bị công ty</span>
                         </Link>
                 </li> }
 
-                {(rolecheck ==="Admin")&&  <li>
+                {(rolecheck ==="Admin")&&  <li onClick={()=>setst(3)}>
                 <Link to="/listdevice">
                         <span className="ti-face-smile"></span>
                         <span>Danh sách thiết bị công ty</span>
@@ -57,20 +58,20 @@ return(
                 </li> }
                 
 
-                <li>
+                <li onClick={()=>setst(4)}>
                 <Link to="/listdevicemuon">
                         <span className="ti-agenda"></span>
                         <span>Danh sách thiết  mượn</span>
                     </Link>
                 </li>
-                {(rolecheck ==="Admin")&&  <li>
+                {(rolecheck ==="Admin")&&  <li onClick={()=>setst(5)}>
                 <Link to="/listdevicechopheduyet">
                       <span className="ti-clipboard"></span>
                         <span>Danh Sách Thiết  Chờ Duyệt</span>
                         </Link>
                 </li> }
 
-                {(rolecheck ==="Admin")&&    <li>
+                {(rolecheck ==="Admin")&&    <li onClick={()=>setst(6)}>
                 <Link to="/listdevicecdangmuon">
                       <span className="ti-clipboard"></span>
                         <span>Danh Sách Thiết  Đang Mượn</span>
@@ -79,7 +80,7 @@ return(
 
 
               
-                <li>
+                <li onClick={()=>setst(8)}>
                 <Link to= "/tinhtrangthietbicuaban">
                    
                         <span className="ti-clipboard"></span>

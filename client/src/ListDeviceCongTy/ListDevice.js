@@ -360,8 +360,8 @@ function ListDevice() {
               <th>Tổng số thiết bị</th>
               <th>Số thiết bị còn lại</th>
               <th>Giá thiết bị (VNĐ)</th>
-              <th>Sửa</th>
-              <th>Xóa</th>
+              <th>Sửa thiết bị </th>
+              <th>Xóa thiết bị</th>
             </tr>
             {listdevice === null
               ? "Loadding...."
