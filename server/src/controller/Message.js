@@ -16,8 +16,6 @@ const postMessage = async (req,res)=>{
         let idchat=null;
         
         const time =  moment(createdAt).format("YYYY-MM-DD hh:mm:ss");
-        const timeVN = moment(time).add(7, ' hour');
-       console.log(time)
     
         const TH1 =   await db.tableIdUserIdChat.findOne({ where: { idUser: userid , idUserChat :userChat  } });
         if(TH1 !=null){

@@ -9,6 +9,7 @@ import Header from "../Header/Header"
 function Tinhtrangthietbimuon() {
   const token = Cookies.get("cookielogin");
   const [listdata ,setListData] = useState(null)
+   const [loading , setLoading] = useState(false)
   const history = useHistory()
   useEffect(async () => {
     await axios.get("http://localhost:5000/api/showdeviceyou", {
@@ -24,12 +25,14 @@ function Tinhtrangthietbimuon() {
          }
        
       });
-  }, []);
-
+  }, [loading]);
+  
+ 
   const handleDelete = async(id)=>{
     console.log(id)
     await axios.delete(`http://localhost:5000/api/deletetingtrang/${id}` , { headers: { Authorization: `Bearer ${token}` }} ).then((res)=>{
       toast.success("Xóa tình trạng bị từ chối thành công");
+      setLoading(!loading)
      }).catch(err=>{   
       if(err.response.data.message ==="erroruser"){
         return  history.push("/login") ;

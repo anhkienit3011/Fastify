@@ -604,10 +604,12 @@ const showtinhtrangthietbicuaban = async(req, res) => {
          const idmuon = iduser.id
         const data = await db.DeviceMuon.findAll({
             where: { UserId :idmuon },
+            attributes:["id", "datetra", "numberm" , "trangthai","createdAt"],
             include: [{
                 model: db.Device,
                 attributes: ["imgdevice", "namedevice"],
-            }, ],
+            }],
+            
         });
 
         return res.send(data);

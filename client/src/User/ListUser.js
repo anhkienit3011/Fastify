@@ -91,7 +91,7 @@ function ListUser() {
           avatar:avatar
         }
           await axios.post("http://localhost:5000/api/register" ,  dataregister ,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
-            toast.success(res.data.payload)
+            toast.success("Tạo tài khoản thành công")
             setregister({
               ten:'',
               email:'',
@@ -146,11 +146,19 @@ function ListUser() {
       const deleteUser = async()=>{
        
       await axios.delete(`http://localhost:5000/api/deleteuser/${idDelete}`,{headers: {Authorization: `Bearer ${token}`} }).then((res)=>{
-  
               toast.success(res.data.payload)
               setShow(false)
               setdeletetb(!deletetb)
              }).catch(err=>{
+
+               if(err.response.data==="errordeleteuser"){
+               return  toast.error("Bạn không thể xóa chính mình ")
+               }
+
+               if(err.response.data==="errordelete"){
+               return toast.error("Người này vẫn còn đang mượn thiết bị nên không thể xóa")
+               }
+
               if(err.response.data.message ==="erroruser"){
                 return  history.push("/login") ;
                }
@@ -158,6 +166,7 @@ function ListUser() {
               
                return  history.push("/login") ;
                 }
+                toast.success(err.response.data.payload)
              })
     }
       

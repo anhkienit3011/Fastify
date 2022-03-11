@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const BaseService = require('./service')
-const fs = require('fs')
+const fs = require('fs');
 const Op = require('Sequelize').Op;
 const register = async(req ,reply)=>{
    
@@ -65,24 +65,91 @@ const getListUserDBcongty = async(req,res)=>{
 const deleteUserDB = async(req ,reply)=>{
     try {
     let {id} = req.params;
-
+    const email = req.user.email;
     const datadelete = await db.User.findOne({
         where: {
             id: id
          }
+    }) 
+
+    const datadevicem = await db.DeviceMuon.findOne({
+        where: {
+            UserId: id
+         }
     })
-    await db.tableIdUserIdChats.destroy({idUser:datadelete.id})
+  
+    if(datadevicem){
+        return  reply.code(500).send("errordelete");
+    }
+
+    const ttBECheck = await db.User.findOne({
+        where:{
+            email
+        }
+    })
+    if(ttBECheck.id === datadelete.id){
+        return  reply.code(500).send("errordeleteuser");
+    }
+     const datachat = await db.tableIdUserIdChat.findAll({
+         where:{
+            idUserChat:datadelete.id
+         }
+     })
+
+
+      if(datachat){
+          datachat.map(async(data)=>{
+        await db.tableChat.destroy({
+            where:{
+                idRowUserChat:data.id
+            }
+        })
+          
+    })
      
+    await db.tableIdUserIdChat.destroy({
+        where:{
+            idUserChat:datadelete.id
+         }
+    })
 
-    const image ="./src/uploads/" +datadelete.avatar
-   fs.unlinkSync((image), err => {
-     if (err) throw err;
-    });
+}
 
-   await db.User.destroy({
-    where: {
-       id: id
-    } })
+    const datachats = await db.tableIdUserIdChat.findAll({
+        where:{
+           idUserChat:datadelete.id
+        }
+    })
+
+    //idUser
+
+     if(datachats){
+         datachats.map(async(data)=>{
+            await db.tableChat.destroy({
+                where:{
+                    idRowUserChat:data.id
+                }
+            })
+        })
+
+        await db.tableIdUserIdChat.destroy({
+            where:{
+                idUserChat:datadelete.id
+             }
+        })
+    }
+
+
+     
+    
+     const image ="./src/uploads/" +datadelete.avatar
+     fs.unlinkSync((image), err => {
+      if (err) throw err;
+     });
+     await db.User.destroy({
+      where: {
+         id: id
+     } })
     return  reply.send(BaseService.SUCCESS("Xóa User Thành Công" ,"success"));
 
 } catch (error) {
@@ -91,7 +158,7 @@ const deleteUserDB = async(req ,reply)=>{
   
     }
 
-
+    
     const editUserDB = async(req ,res)=>{
         try {
             let {id} = req.params;

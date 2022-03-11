@@ -9,7 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       idRowUserChat: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'tableIdUserIdChats',
+          key: 'id', 
+      }
       },
       textChat: {
         type: Sequelize.STRING
